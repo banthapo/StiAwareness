@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+        android:id="@+id/space_name_text"
+        android:layout_width="183dp"
+        android:layout_height="wrap_content"
+        android:text="Space Name"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.232"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.131" />
+
+    <EditText
+        android:id="@+id/space_name"
+        android:layout_width="262dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="36dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="@+id/space_name_text"
+        app:layout_constraintTop_toBottomOf="@+id/space_name_text" />
+
+    <TextView
+        android:id="@+id/phone_number_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="Phone Number"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/space_name_text"
+        app:layout_constraintStart_toStartOf="@+id/space_name_text"
+        app:layout_constraintTop_toBottomOf="@+id/space_name_text" />
+
+    <EditText
+        android:id="@+id/phone_number"
+        android:layout_width="269dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="@+id/space_name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/space_name"
+        app:layout_constraintTop_toBottomOf="@+id/phone_number_text" />
+
+    <TextView
+        android:id="@+id/password_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="Password"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/phone_number_text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/phone_number_text"
+        app:layout_constraintTop_toBottomOf="@+id/phone_number_text" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="271dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/phone_number"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/phone_number"
+        app:layout_constraintTop_toBottomOf="@+id/password_text" />
+
+    <TextView
+        android:id="@+id/password_confirm_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="Confirm Password"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/password_text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/password_text"
+        app:layout_constraintTop_toBottomOf="@+id/password_text" />
+
+    <EditText
+        android:id="@+id/password_confirm"
+        android:layout_width="286dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/password"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/password_confirm_text" />
+
+    <Button
+        android:id="@+id/sign_up_as_doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="As Doctor"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.708"
+        app:layout_constraintStart_toStartOf="@+id/password_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/password_confirm"
+        app:layout_constraintVertical_bias="0.171" />
+
+    <Button
+        android:id="@+id/sign_up_as_member"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="As Member"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sign_up_as_doctor"
+        app:layout_constraintHorizontal_bias="0.716"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_confirm"
+        app:layout_constraintVertical_bias="0.171" />
+</androidx.constraintlayout.widget.ConstraintLayout>
