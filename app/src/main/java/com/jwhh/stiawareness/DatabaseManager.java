@@ -103,8 +103,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
             cursor.close();
             return false;
         }
-
-
     }
 
     public List<DoctorModel> getDoctorDetails(){

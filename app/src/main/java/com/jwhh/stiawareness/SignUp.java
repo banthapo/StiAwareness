@@ -30,8 +30,6 @@ public class SignUp extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
-
         Button doctorSignUp = findViewById(R.id.sign_up_as_doctor);
         Button memberSignUp = findViewById(R.id.sign_up_as_member);
 

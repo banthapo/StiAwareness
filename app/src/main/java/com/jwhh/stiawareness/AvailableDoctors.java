@@ -1,30 +1,29 @@
 package com.jwhh.stiawareness;
 
 import android.os.Bundle;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.jwhh.stiawareness.databinding.ActivityAvailableDoctorsBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AvailableDoctors extends AppCompatActivity {
     private ActivityAvailableDoctorsBinding binding;
 
     private ListView doctorList;
-    private ArrayList<DoctorModel> listDoctors;
+    private String doctorDetails;
+//    private ArrayList<DoctorModel> listDoctors;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+//    private RecyclerView recyclerView;
+//    private RecyclerView.LayoutManager layoutManager;
 
-    private ImageView searchDoctorName;
-    private EditText searchText;
+//    private ImageView searchDoctorName;
+//    private EditText searchText;
 //    private ArrayList<String> doctorNames = new ArrayList<>();
 //    private ArrayList<String> doctorEmail = new ArrayList<>();
 //    private ArrayList<String> doctorNumber = new ArrayList<>();
@@ -39,57 +38,73 @@ public class AvailableDoctors extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        try{
-            searchDoctorName = findViewById(R.id.search_doctor);
-            searchText = findViewById(R.id.search_doctor_text);
-
+//
+//            searchDoctorName = findViewById(R.id.search_doctor);
+//            searchText = findViewById(R.id.search_doctor_text);
             doctorList = findViewById(R.id.doctor_list_view);
 
-            displayDoctorInfo();
+        displayDoctorName();
 
-            searchDoctorName.setOnClickListener(v -> {
-                String text = searchText.getText().toString();
-
-//                searchResults(text);
-            });
-
-
-        }catch(Exception e){}
-
-
-
-        deleteDoctor();
+        doctorList.setOnItemClickListener((parent, view, position, id) -> delete(parent, position));
 
     }
 
-    //method for deleting doctors
-    private void deleteDoctor() {
-        doctorList.setOnItemClickListener((parent, view, position, id) -> {
-
-            try {
-                DoctorModel clickedDoctor = (DoctorModel) parent.getItemAtPosition(position);
-
-                databaseManager.deleteDoctor(clickedDoctor);
-
-            }catch(Exception e){
-
-            }
-
-        });
-    }
-
-
-    public void displayDoctorInfo() {
-        try {
+    //displaying doctor names to listview
+    public void doctorDetails() {
             databaseManager = new DatabaseManager(AvailableDoctors.this);
 
-            List<DoctorModel> allDoctors = databaseManager.getDoctorDetails();
-            ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 ,allDoctors);
+            List<DoctorModel> allDoctors = this.databaseManager.getDoctorDetails();
+            ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 , allDoctors);
 
-            doctorList.setAdapter( doctorArrayAdapter);
-        } catch (Exception e){}
+            doctorDetails = doctorArrayAdapter.toString();
+
     }
 
+
+    //method for deleting doctors
+    private void delete(AdapterView<?> parent, int position) {
+        try{
+            DoctorModel clickedDoctor = (DoctorModel) parent.getItemAtPosition(position);
+            databaseManager.deleteDoctor(clickedDoctor);
+
+            Toast.makeText(AvailableDoctors.this, "Successfully deleted" + doctorDetails, Toast.LENGTH_LONG).show();
+            displayDoctorName();
+        }catch(Exception e){
+            Toast.makeText(AvailableDoctors.this, "Delete failed", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void displayDoctorName(){
+        databaseManager = new DatabaseManager(AvailableDoctors.this);
+
+        List<String> allDoctors = databaseManager.getDoctorName();
+        ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 , allDoctors);
+
+        doctorList.setAdapter( doctorArrayAdapter);
+    }
+
+    //getting doctors full details
+  /*  public void displayDoctorInfo() {
+        try {
+            doctorList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    DoctorModel clickedDoctor = (DoctorModel) parent.getItemAtPosition(position);
+                    String doctorDetails =  databaseManager.getDoctorDetails(clickedDoctor).toString();
+
+                    if (!deleteDoctor()) {
+                        Toast.makeText(AvailableDoctors.this, doctorDetails, Toast.LENGTH_LONG).show();
+                        return true;
+                    } else {
+                        return  false;
+                    }
+                }
+            });
+        }catch(Exception e){
+
+        }
+
+    }*/
     //setting up recyclerView
 
 /*    private  void gettingDoctors(){
@@ -111,8 +126,11 @@ public class AvailableDoctors extends AppCompatActivity {
     }
 */
 
+/*
     public int getDoctorCount(){
 
         return doctorList.getCount();
     }
+
+ */
 }
