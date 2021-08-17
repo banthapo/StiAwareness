@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,9 @@ public class DoctorRegistry extends AppCompatActivity {
     private String name;
     private DoctorModel doctorModel;
 
+    private ImageView backButton;
+    private Button register;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +33,16 @@ public class DoctorRegistry extends AppCompatActivity {
         binding = ActivityDoctorRegistryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
-
-        Button register = findViewById(R.id.register_button);
+        register = findViewById(R.id.register_button);
+        backButton = findViewById(R.id.from_doctor_registry);
 
         doctorRegistration(register);
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
+            startActivity(intent);
+        });
+
 
     }
 

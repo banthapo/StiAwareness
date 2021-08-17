@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,9 @@ public class SignUp extends AppCompatActivity {
     private EditText password;
     private EditText confirmPassword;
     private boolean success;
+    private ImageView backButton;
+    private Button doctorSignUp;
+    private Button memberSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,9 @@ public class SignUp extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Button doctorSignUp = findViewById(R.id.sign_up_as_doctor);
-        Button memberSignUp = findViewById(R.id.sign_up_as_member);
+        doctorSignUp = findViewById(R.id.sign_up_as_doctor);
+        memberSignUp = findViewById(R.id.sign_up_as_member);
+        backButton = findViewById(R.id.from_sign_in);
 
         spaceName = findViewById(R.id.space_name);
         phoneNumber = findViewById(R.id.phone_number);
@@ -55,6 +60,12 @@ public class SignUp extends AppCompatActivity {
             }
 
         });
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignUp.this, LogIn.class);
+            startActivity(intent);
+        });
+
     }
 
     private void memberSignIn() {
@@ -67,7 +78,7 @@ public class SignUp extends AppCompatActivity {
             successCases (memberDatabase, memberModel);
 
         }catch (Exception e){
-            Toast.makeText(SignUp.this, "Error during registration, try again ", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignUp.this, "please fill all fields ", Toast.LENGTH_LONG).show();
             memberModel = new MemberModel(null, 0, null,  null);
         }
 

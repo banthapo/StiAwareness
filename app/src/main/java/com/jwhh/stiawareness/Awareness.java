@@ -2,24 +2,18 @@ package com.jwhh.stiawareness;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-import android.widget.Button;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.jwhh.stiawareness.databinding.ActivityAwarenessBinding;
 
 public class Awareness extends AppCompatActivity {
 
     private ActivityAwarenessBinding binding;
+    private ImageView backButton;
+    private Button counsellingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +22,9 @@ public class Awareness extends AppCompatActivity {
         binding = ActivityAwarenessBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
 
-        Button counsellingButton = findViewById(R.id.counselling_button);
+        counsellingButton = findViewById(R.id.counselling_button);
+        backButton = findViewById(R.id.from_awareness);
 
         counsellingButton.setOnClickListener(v -> {
             Intent intent = new Intent(Awareness.this, AvailableDoctors.class);
@@ -39,6 +33,9 @@ public class Awareness extends AppCompatActivity {
 
         });
 
-
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Awareness.this, LogIn.class);
+            startActivity(intent);
+        });
     }
 }

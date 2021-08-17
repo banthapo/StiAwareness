@@ -2,22 +2,15 @@ package com.jwhh.stiawareness;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.jwhh.stiawareness.databinding.ActivityLogInBinding;
 
 public class LogIn extends AppCompatActivity {
@@ -36,8 +29,6 @@ public class LogIn extends AppCompatActivity {
 
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        setSupportActionBar(binding.toolbar);
 
         spaceName = findViewById(R.id.login_name);
         password = findViewById(R.id.login_name);

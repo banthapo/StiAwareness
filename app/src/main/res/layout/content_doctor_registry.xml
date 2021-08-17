@@ -1,39 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <ImageView
+        android:id="@+id/from_doctor_registry"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/doctor_title_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.724"
+        app:srcCompat="@drawable/ic" />
 
     <Button
         android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="40dp"
+        android:shadowColor="#2E2828"
         android:text="Register"
-        android:textSize="18dp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/doctor_email"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.989"
         app:layout_constraintStart_toStartOf="@+id/doctor_email"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_email" />
+        app:layout_constraintTop_toBottomOf="@+id/doctor_email"
+        app:layout_constraintVertical_bias="0.157" />
 
     <TextView
         android:id="@+id/doctor_telephone_number_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="4dp"
         android:text="Telephone Number"
+        android:textColor="#DA5187E4"
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/doctor_surname_text"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_surname_text" />
+        app:layout_constraintTop_toBottomOf="@+id/doctor_surname" />
 
     <EditText
         android:id="@+id/doctor_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="eg. bawo@yahoo.com"
         android:inputType="textEmailAddress"
@@ -47,20 +64,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title"
+        android:textColor="#DA5187E4"
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintHorizontal_bias="0.162"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.119" />
+        app:layout_constraintVertical_bias="0.138" />
 
     <EditText
         android:id="@+id/doctor_telephone_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="eg. 01 978 ..."
         android:inputType="phone"
@@ -73,11 +91,11 @@
         android:id="@+id/first_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/doctor_title"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/doctor_title"
         app:layout_constraintTop_toBottomOf="@+id/first_name_text" />
 
@@ -86,7 +104,7 @@
         android:layout_width="238dp"
         android:layout_height="43dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="enter title"
         android:inputType="textPersonName"
@@ -97,7 +115,7 @@
         android:id="@+id/doctor_surname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/first_name"
@@ -109,34 +127,37 @@
         android:id="@+id/doctor_email_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="4dp"
         android:text="Email Address"
+        android:textColor="#DA5187E4"
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/doctor_telephone_number_text"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_telephone_number_text" />
+        app:layout_constraintTop_toBottomOf="@+id/doctor_telephone_number" />
 
     <TextView
         android:id="@+id/first_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
         android:text="First Name"
+        android:textColor="#DA5187E4"
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/doctor_title_text"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_title_text" />
+        app:layout_constraintTop_toBottomOf="@+id/doctor_title" />
 
     <TextView
         android:id="@+id/doctor_surname_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="4dp"
         android:text="Surname"
+        android:textColor="#DA5187E4"
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/first_name_text"
-        app:layout_constraintTop_toBottomOf="@+id/first_name_text" />
+        app:layout_constraintTop_toBottomOf="@+id/first_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

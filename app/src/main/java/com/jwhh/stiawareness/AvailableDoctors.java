@@ -1,8 +1,10 @@
 package com.jwhh.stiawareness;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ public class AvailableDoctors extends AppCompatActivity {
 
     private ListView doctorList;
     private String doctorDetails;
+    private ImageView backButton;
 //    private ArrayList<DoctorModel> listDoctors;
 
 //    private RecyclerView recyclerView;
@@ -42,8 +45,14 @@ public class AvailableDoctors extends AppCompatActivity {
 //            searchDoctorName = findViewById(R.id.search_doctor);
 //            searchText = findViewById(R.id.search_doctor_text);
             doctorList = findViewById(R.id.doctor_list_view);
+            backButton = findViewById(R.id.from_available_doctors);
 
         displayDoctorName();
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(AvailableDoctors.this, Awareness.class);
+            startActivity(intent);
+        });
 
         doctorList.setOnItemClickListener((parent, view, position, id) -> delete(parent, position));
 
