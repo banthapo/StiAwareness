@@ -53,6 +53,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXIT USER");
 
     }
 
@@ -87,24 +88,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-
-    public boolean deleteDoctor(DoctorModel doctorModel) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String queryString = "DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = " +
-                doctorModel.getPhoneNumber();
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst()){
-            return true;
-        } else{
-            cursor.close();
-            return false;
-        }
-    }
-
     public List<DoctorModel> getDoctorDetails(){
         List<DoctorModel> returnDoctors = new ArrayList<>();
 
@@ -134,6 +117,57 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return returnDoctors ;
     }
+
+    public List<MemberModel> getMemberDetails(){
+        List<MemberModel> returnMembers = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + MEMBER_TABLE;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()){
+
+            do {
+                String spaceName = cursor.getString(0);
+                int phoneNumber = cursor.getInt(1);
+                String password = cursor.getString(2);
+                String confirmPassword = cursor.getString(3);
+
+
+                MemberModel newMember = new MemberModel(spaceName, phoneNumber, password, confirmPassword);
+                returnMembers.add(newMember);
+
+            } while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return returnMembers;
+    }
+
+
+
+    public boolean deleteDoctor(DoctorModel doctorModel) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String queryString = "DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = " +
+                doctorModel.getPhoneNumber();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()){
+            return true;
+        } else{
+            cursor.close();
+            return false;
+        }
+    }
+
+
 
     public List<String> getDoctorName() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -237,5 +271,32 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return returnDoctors;
     }
+
+    public boolean checkSpaceName(String spaceName) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE spacename = ?", new String[]{spaceName});
+        if (cursor.getCount() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean checkLogDetails(String spaceName, String password){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE spaceName = ? AND password = ?", new String[] {spaceName, password});
+        if (cursor.getCount() > 0){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+
+
 
 }
