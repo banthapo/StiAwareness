@@ -1,21 +1,23 @@
 package com.jwhh.stiawareness;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jwhh.stiawareness.databinding.ActivityAvailableDoctorsBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AvailableDoctors extends AppCompatActivity {
     private ActivityAvailableDoctorsBinding binding;
 
-//    private ListView doctorList;
+    private ListView doctorList;
     private ArrayList<DoctorModel> listDoctors;
 
     private RecyclerView recyclerView;
@@ -23,9 +25,9 @@ public class AvailableDoctors extends AppCompatActivity {
 
     private ImageView searchDoctorName;
     private EditText searchText;
-    private ArrayList<String> doctorNames = new ArrayList<>();
-    private ArrayList<String> doctorEmail = new ArrayList<>();
-    private ArrayList<String> doctorNumber = new ArrayList<>();
+//    private ArrayList<String> doctorNames = new ArrayList<>();
+//    private ArrayList<String> doctorEmail = new ArrayList<>();
+//    private ArrayList<String> doctorNumber = new ArrayList<>();
 
     private DatabaseManager databaseManager ;
 
@@ -39,10 +41,10 @@ public class AvailableDoctors extends AppCompatActivity {
 
         try{
             searchDoctorName = findViewById(R.id.search_doctor);
-            recyclerView = findViewById(R.id.doctor_recyclerview);
             searchText = findViewById(R.id.search_doctor_text);
 
-            gettingDoctors();
+            doctorList = findViewById(R.id.doctor_list_view);
+
             displayDoctorInfo();
 
             searchDoctorName.setOnClickListener(v -> {
@@ -56,12 +58,12 @@ public class AvailableDoctors extends AppCompatActivity {
 
 
 
-//        deleteDoctor();
+        deleteDoctor();
 
     }
 
     //method for deleting doctors
-  /*  private void deleteDoctor() {
+    private void deleteDoctor() {
         doctorList.setOnItemClickListener((parent, view, position, id) -> {
 
             try {
@@ -74,28 +76,29 @@ public class AvailableDoctors extends AppCompatActivity {
             }
 
         });
-    }*/
+    }
 
 
     public void displayDoctorInfo() {
-//        try {
-            recyclerView = findViewById(R.id.doctor_recyclerview);
-            DoctorAdapter doctorAdapter = new DoctorAdapter(AvailableDoctors.this, doctorNames, doctorNumber, doctorEmail);
+        try {
+            databaseManager = new DatabaseManager(AvailableDoctors.this);
 
-            recyclerView.setAdapter(doctorAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(AvailableDoctors.this));
-//        } catch (Exception e){}
+            List<DoctorModel> allDoctors = databaseManager.getDoctorDetails();
+            ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 ,allDoctors);
+
+            doctorList.setAdapter( doctorArrayAdapter);
+        } catch (Exception e){}
     }
 
     //setting up recyclerView
 
-    private  void gettingDoctors(){
-        doctorNames.add(databaseManager.getDoctorName().toString());
-        doctorNumber.add(databaseManager.getDoctorName().toString());
-        doctorEmail.add(databaseManager.getDoctorName().toString());
+/*    private  void gettingDoctors(){
+//        doctorNames.add(databaseManager.getDoctorName().toString());
+//        doctorNumber.add(databaseManager.getDoctorName().toString());
+//        doctorEmail.add(databaseManager.getDoctorName().toString());
 
-        displayDoctorInfo();
-    }
+
+    }*/
 
   /*  public void searchResults(String text){
         databaseManager = new DatabaseManager(AvailableDoctors.this);
@@ -110,6 +113,6 @@ public class AvailableDoctors extends AppCompatActivity {
 
     public int getDoctorCount(){
 
-        return listDoctors.size();
+        return doctorList.getCount();
     }
 }

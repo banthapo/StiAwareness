@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class DoctorAdapter extends RecyclerView.Adapter<DoctorViewHolder>{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder>{
 
     private Context context;
     DoctorModel doctorModel;
@@ -19,8 +19,9 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorViewHolder>{
     private ArrayList<String> names ;
     private ArrayList<String> pNumber ;
     private ArrayList<String> email ;
+    private RecyclerView recyclerView;
 
-    public DoctorAdapter(Context context, ArrayList<String> names, ArrayList<String> pNumber, ArrayList<String> email) {
+    public RecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> pNumber, ArrayList<String> email) {
         this.context = context;
        // this.doctorModel = doctorModel;
         this.names = names;
@@ -31,20 +32,20 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorViewHolder>{
 
 
     @Override
-    public DoctorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View doctorView = inflater.inflate(R.layout.layout_doctors, parent, false);
+    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+       View doctorView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_doctors, parent, false);
+        RecyclerViewHolder doctorViewHolder = new RecyclerViewHolder(doctorView);
 
-        DoctorViewHolder doctorViewHolder = new DoctorViewHolder(doctorView);
         return doctorViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(DoctorViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
         holder.name.setText(names.get(position));
         holder.email.setText(email.get(position));
         holder.pNumber.setText(pNumber.get(position));
+
     }
 
     @Override
