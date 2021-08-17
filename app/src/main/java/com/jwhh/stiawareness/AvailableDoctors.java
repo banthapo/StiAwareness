@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.jwhh.stiawareness.databinding.ActivityAvailableDoctorsBinding;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AvailableDoctors extends AppCompatActivity {
     private ActivityAvailableDoctorsBinding binding;
@@ -24,9 +23,9 @@ public class AvailableDoctors extends AppCompatActivity {
 
     private ImageView searchDoctorName;
     private EditText searchText;
-    private List<String> doctorNames = new ArrayList<>();
-    private List<String> doctorEmail = new ArrayList<>();
-    private List<String> doctorNumber = new ArrayList<>();
+    private ArrayList<String> doctorNames = new ArrayList<>();
+    private ArrayList<String> doctorEmail = new ArrayList<>();
+    private ArrayList<String> doctorNumber = new ArrayList<>();
 
     private DatabaseManager databaseManager ;
 
@@ -79,22 +78,21 @@ public class AvailableDoctors extends AppCompatActivity {
 
 
     public void displayDoctorInfo() {
-        try {
+//        try {
             recyclerView = findViewById(R.id.doctor_recyclerview);
             DoctorAdapter doctorAdapter = new DoctorAdapter(AvailableDoctors.this, doctorNames, doctorNumber, doctorEmail);
 
             recyclerView.setAdapter(doctorAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(AvailableDoctors.this));
-        } catch (Exception e){}
+//        } catch (Exception e){}
     }
 
     //setting up recyclerView
 
     private  void gettingDoctors(){
-
-        doctorNames =  databaseManager.getDoctorName();
-        doctorNumber = databaseManager.getDoctorNumber();
-        doctorEmail =  databaseManager.getDoctorEmail();
+        doctorNames.add(databaseManager.getDoctorName().toString());
+        doctorNumber.add(databaseManager.getDoctorName().toString());
+        doctorEmail.add(databaseManager.getDoctorName().toString());
 
         displayDoctorInfo();
     }

@@ -27,7 +27,7 @@
             android:theme="@style/Theme.StiAwareness.NoActionBar" />
         <activity
             android:name=".LogIn"
-            android:label="@string/title_activity_log_in"
+            android:label="StiAwareness App"
             android:theme="@style/Theme.StiAwareness.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

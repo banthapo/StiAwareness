@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DoctorAdapter extends RecyclerView.Adapter<DoctorViewHolder>{
 
@@ -16,11 +16,11 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorViewHolder>{
     DoctorModel doctorModel;
     DatabaseManager databaseManager;
 
-    private List<String> names ;
-    private List<String> pNumber ;
-    private List<String> email ;
+    private ArrayList<String> names ;
+    private ArrayList<String> pNumber ;
+    private ArrayList<String> email ;
 
-    public DoctorAdapter(Context context, List<String> names, List<String> pNumber, List<String> email) {
+    public DoctorAdapter(Context context, ArrayList<String> names, ArrayList<String> pNumber, ArrayList<String> email) {
         this.context = context;
        // this.doctorModel = doctorModel;
         this.names = names;
@@ -49,6 +49,6 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorViewHolder>{
 
     @Override
     public int getItemCount() {
-        return 0;
+        return names.size();
     }
 }
