@@ -2,6 +2,7 @@ package com.jwhh.stiawareness;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ public class AvailableDoctors extends AppCompatActivity {
     private ListView doctorList;
     private String doctorDetails;
     private ImageView backButton;
+
 //    private ArrayList<DoctorModel> listDoctors;
 
 //    private RecyclerView recyclerView;
@@ -53,8 +55,17 @@ public class AvailableDoctors extends AppCompatActivity {
             Intent intent = new Intent(AvailableDoctors.this, Awareness.class);
             startActivity(intent);
         });
+    try {
+        doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                delete(parent, position);
 
-        doctorList.setOnItemClickListener((parent, view, position, id) -> delete(parent, position));
+//                displayDoctorName();
+            }
+        });
+
+    } catch (Exception e){}
 
     }
 
@@ -76,7 +87,7 @@ public class AvailableDoctors extends AppCompatActivity {
             DoctorModel clickedDoctor = (DoctorModel) parent.getItemAtPosition(position);
             databaseManager.deleteDoctor(clickedDoctor);
 
-            Toast.makeText(AvailableDoctors.this, "Successfully deleted" + doctorDetails, Toast.LENGTH_LONG).show();
+            Toast.makeText(AvailableDoctors.this, "Successfully deleted" + clickedDoctor, Toast.LENGTH_LONG).show();
             displayDoctorName();
         }catch(Exception e){
             Toast.makeText(AvailableDoctors.this, "Delete failed", Toast.LENGTH_LONG).show();
@@ -95,18 +106,16 @@ public class AvailableDoctors extends AppCompatActivity {
     //getting doctors full details
   /*  public void displayDoctorInfo() {
         try {
-            doctorList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    DoctorModel clickedDoctor = (DoctorModel) parent.getItemAtPosition(position);
-                    String doctorDetails =  databaseManager.getDoctorDetails(clickedDoctor).toString();
+            doctorList.setOnItemLongClickListener((parent, view, position, id) -> {
 
-                    if (!deleteDoctor()) {
-                        Toast.makeText(AvailableDoctors.this, doctorDetails, Toast.LENGTH_LONG).show();
-                        return true;
-                    } else {
-                        return  false;
-                    }
+                DoctorModel clickedDoctor = (DoctorModel) parent.getItemAtPosition(position);
+                String doctorDetails =  databaseManager.getDoctorDetails();
+
+                if (!deleteDoctor()) {
+                    Toast.makeText(AvailableDoctors.this, doctorDetails, Toast.LENGTH_LONG).show();
+                    return true;
+                } else {
+                    return  false;
                 }
             });
         }catch(Exception e){

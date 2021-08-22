@@ -21,14 +21,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public static final String DOCTOR_EMAIL_ADDRESS = "DOCTOR_EMAIL_ADDRESS";
 
     public static final String MEMBER_TABLE = "MEMBER_TABLE";
-    public static final String SPACE_NAME = "SPACE_NAME";
+    public static final String SPACENAME = "SPACENAME";
     public static final String PHONE_NUMBER = "PHONE_NUMBER";
     public static final String PASSWORD = "PASSWORD";
-    public static final String CONFIRM_PASSWORD = "CONFIRM_PASSWORD";
 
 
     public DatabaseManager(@Nullable Context context ) {
-        super(context, "member_doctor.db", null, 1);
+        super(context, "member_doctor.db", null, 3);
 
     }
 
@@ -39,8 +38,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
             String doctorStatement = "CREATE TABLE " + DOCTOR_TABLE + " (" + DOCTOR_TITLE + " TEXT, " + DOCTOR_FIRST_NAME + " TEXT, " +
                     DOCTOR_SURNAME + " TEXT, " + DOCTOR_PHONE_NUMBER + " INTEGER PRIMARY KEY, " + DOCTOR_EMAIL_ADDRESS + " TEXT)";
 
-            String memberStatement = "CREATE TABLE " + MEMBER_TABLE + " ( " + SPACE_NAME + " TEXT UNIQUE, " + PHONE_NUMBER +
-                    " INT PRIMARY KEY , " + PASSWORD + " TEXT , " + CONFIRM_PASSWORD + " TEXT )";
+            String memberStatement = "CREATE TABLE " + MEMBER_TABLE + " ( " + SPACENAME + " TEXT , " + PHONE_NUMBER +
+                    " INT PRIMARY KEY , " + PASSWORD + " TEXT)";
 
 
             db.execSQL(doctorStatement);
@@ -53,7 +52,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXIT USER");
+//        db.execSQL("DROP TABLE IF EXISTS MEMBER_TABLE");
 
     }
 
@@ -77,10 +76,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(SPACE_NAME, memberModel.getSpaceName());
+        cv.put(SPACENAME, memberModel.getSpaceName());
         cv.put(PHONE_NUMBER, memberModel.getPhoneNumber());
         cv.put(PASSWORD, memberModel.getPassword());
-        cv.put(CONFIRM_PASSWORD, memberModel.getConfirmPassword());
 
         long insert = db.insert(MEMBER_TABLE, null, cv);
 
@@ -133,10 +131,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String spaceName = cursor.getString(0);
                 int phoneNumber = cursor.getInt(1);
                 String password = cursor.getString(2);
-                String confirmPassword = cursor.getString(3);
 
-
-                MemberModel newMember = new MemberModel(spaceName, phoneNumber, password, confirmPassword);
+                MemberModel newMember = new MemberModel(spaceName, phoneNumber, password);
                 returnMembers.add(newMember);
 
             } while(cursor.moveToNext());
@@ -147,8 +143,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return returnMembers;
     }
-
-
 
     public boolean deleteDoctor(DoctorModel doctorModel) {
 
@@ -166,8 +160,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return false;
         }
     }
-
-
 
     public List<String> getDoctorName() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -275,18 +267,22 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public boolean checkSpaceName(String spaceName) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE spacename = ?", new String[]{spaceName});
+        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE SPACENAME = ?", new String[]{spaceName});
+
         if (cursor.getCount() > 0) {
             return false;
         } else {
             return true;
         }
+
     }
 
     public boolean checkLogDetails(String spaceName, String password){
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE spaceName = ? AND password = ?", new String[] {spaceName, password});
+        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ? AND " +
+                PASSWORD + " = ? ", new String[] {spaceName, password});
+
         if (cursor.getCount() > 0){
             return true;
         } else {
@@ -294,9 +290,4 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
 
     }
-
-
-
-
-
 }

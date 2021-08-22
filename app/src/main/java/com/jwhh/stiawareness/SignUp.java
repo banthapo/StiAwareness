@@ -73,13 +73,13 @@ public class SignUp extends AppCompatActivity {
 
         try {
             memberModel = new MemberModel(spaceName.getText().toString(), Integer.parseInt(phoneNumber.getText().toString())
-                    , password.getText().toString(), confirmPassword.getText().toString());
+                    , password.getText().toString());
 
             successCases (memberDatabase, memberModel);
 
         }catch (Exception e){
             Toast.makeText(SignUp.this, "please fill all fields ", Toast.LENGTH_LONG).show();
-            memberModel = new MemberModel(null, 0, null,  null);
+            memberModel = new MemberModel(null, 0, null);
         }
 
     }
@@ -89,12 +89,6 @@ public class SignUp extends AppCompatActivity {
         boolean spaceNameLength = spaceName.length() < 10;
         boolean phoneNumberLength = phoneNumber.length()  < 3;
         boolean passwordLength = password.length() < 3 ;
-
-        String cPassword = memberModel.getPassword();
-        String cPassword2 = memberModel.getConfirmPassword();
-        boolean confirmPassword = cPassword == cPassword2;
-
-        success = false;
 
         if (spaceNameLength) {
             success = true;
@@ -116,13 +110,6 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(SignUp.this, "Short password", Toast.LENGTH_LONG).show();
             return;
         }
-//
-//        if (confirmPassword){
-//            success = true ;
-//        } else {
-//            Toast.makeText(SignUpAsMember.this, "passwords do not match" + cPassword + cPassword2, Toast.LENGTH_LONG).show();
-//            return;
-//        }
 
         if (success){
             memberDatabase.addMember(memberModel);

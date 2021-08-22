@@ -3,13 +3,13 @@ package com.jwhh.stiawareness;
 public class MemberModel {
     private String spaceName;
     private int phoneNumber;
-    private String password, confirmPassword;
+    private String password;
 
-    public MemberModel(String spaceName, int phoneNumber, String password, String confirmPassword) {
+    public MemberModel(String spaceName, int phoneNumber, String password) {
         this.spaceName = spaceName;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.confirmPassword = confirmPassword;
+
     }
 
     @Override
@@ -18,7 +18,6 @@ public class MemberModel {
                 "spaceName='" + spaceName + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
                 '}';
     }
 
@@ -46,11 +45,4 @@ public class MemberModel {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
 }

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jwhh.stiawareness.databinding.ActivityLogInBinding;
 
+
 public class LogIn extends AppCompatActivity {
 
 
@@ -21,7 +22,7 @@ public class LogIn extends AppCompatActivity {
     private View view;
     private TextView signUp;
     private EditText spaceName, password;
-    private DatabaseManager databaseManager = new DatabaseManager(LogIn.this);
+    private final DatabaseManager databaseManager = new DatabaseManager(LogIn.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,34 +31,30 @@ public class LogIn extends AppCompatActivity {
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        spaceName = findViewById(R.id.login_name);
-        password = findViewById(R.id.login_password);
-
         logIn = findViewById(R.id.login_button);
         signUp = findViewById(R.id.sign_up_text);
 
+
         logIn.setOnClickListener(v -> {
+                spaceName = findViewById(R.id.login_name);
+                password = findViewById(R.id.login_password);
 
-
-            try {
                 String getName = spaceName.getText().toString();
                 String getPassword = password.getText().toString();
 
-                Intent intent = new Intent(LogIn.this, Awareness.class);
-
                 boolean checkLogin = databaseManager.checkLogDetails(getName, getPassword);
+
                 if (checkLogin == true){
 
-                    String members = databaseManager.getMemberDetails().toString();
-                    Toast.makeText(LogIn.this, "Log in failed" + members, Toast.LENGTH_LONG).show();
-                    startActivity(intent);
+                    Intent intent = new Intent(LogIn.this, Awareness.class);
+//                    String members = databaseManager.getMemberDetails().toString();
+                    Toast.makeText(LogIn.this, "Log in successful" , Toast.LENGTH_LONG).show();
 
+                    startActivity(intent);
                 }else {
                     Toast.makeText(LogIn.this, "Log in failed", Toast.LENGTH_LONG).show();
                 }
 
-            } catch (Exception e){
-            }
 
         });
 
