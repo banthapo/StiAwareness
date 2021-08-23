@@ -42,13 +42,15 @@ public class SignUp extends AppCompatActivity {
         spaceName = findViewById(R.id.space_name);
         phoneNumber = findViewById(R.id.phone_number);
         password = findViewById(R.id.password);
-        confirmPassword = findViewById(R.id.password_confirm);
+        confirmPassword = findViewById(R.id.c_password);
 
         doctorSignUp.setOnClickListener(v -> {
             Intent doctorIntent = new Intent(SignUp.this, DoctorRegistry.class);
             memberSignIn();
             if (success){
                 startActivity(doctorIntent);
+            } else {
+                return;
             }
         });
 
@@ -94,16 +96,9 @@ public class SignUp extends AppCompatActivity {
         boolean spaceNameLength = spaceName.length() < 10;
         boolean phoneNumberLength = phoneNumber.length()  < 3;
         boolean passwordLength = password.length() < 3 ;
-        boolean checkPassword = getPassword == getPasswordConfirm;
+        boolean checkPassword = getPassword.equals(getPasswordConfirm);
 
         boolean checkSpaceName = memberDatabase.checkSpaceName(getSpaceName);
-
-        if (checkPassword){
-            success = true;
-        } else {
-            Toast.makeText(SignUp.this, "Passwords to not match", Toast.LENGTH_LONG).show();
-            return;
-        }
 
         if (checkSpaceName){
             success = true;
@@ -130,6 +125,12 @@ public class SignUp extends AppCompatActivity {
             success = true;
         } else {
             Toast.makeText(SignUp.this, "Short password", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (checkPassword){
+            success = true;
+        } else {
+            Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_LONG).show();
             return;
         }
 

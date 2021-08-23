@@ -10,12 +10,14 @@
         android:id="@+id/from_doctor_registry"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toTopOf="@+id/doctor_title_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.724"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic" />
 
     <Button
@@ -29,10 +31,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/doctor_email"
-        app:layout_constraintHorizontal_bias="0.989"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/doctor_email"
         app:layout_constraintTop_toBottomOf="@+id/doctor_email"
-        app:layout_constraintVertical_bias="0.157" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/doctor_telephone_number_text"
@@ -54,6 +56,7 @@
         android:ems="10"
         android:hint="eg. bawo@yahoo.com"
         android:inputType="textEmailAddress"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/doctor_telephone_number"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/doctor_telephone_number"
@@ -82,6 +85,7 @@
         android:ems="10"
         android:hint="eg. 01 978 ..."
         android:inputType="phone"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/doctor_surname"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/doctor_surname"
@@ -94,6 +98,7 @@
         android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/doctor_title"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/doctor_title"
@@ -108,6 +113,7 @@
         android:ems="10"
         android:hint="enter title"
         android:inputType="textPersonName"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="@+id/doctor_title_text"
         app:layout_constraintTop_toBottomOf="@+id/doctor_title_text" />
 
@@ -118,6 +124,7 @@
         android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/first_name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/first_name"

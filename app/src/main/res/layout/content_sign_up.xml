@@ -43,6 +43,7 @@
         android:ems="10"
         android:hint="enter nickname"
         android:inputType="text"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/space_name_text"
         app:layout_constraintTop_toBottomOf="@+id/space_name_text" />
 
@@ -67,6 +68,7 @@
         android:ems="10"
         android:hint="eg. 011555"
         android:inputType="phone"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/space_name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/space_name"
@@ -94,6 +96,7 @@
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/phone_number"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/phone_number"
@@ -114,13 +117,14 @@
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <EditText
-        android:id="@+id/password_confirm"
+        android:id="@+id/c_password"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="re-enter password"
         android:inputType="textPassword"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/password"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/password"
@@ -139,8 +143,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.708"
-        app:layout_constraintStart_toStartOf="@+id/password_confirm"
-        app:layout_constraintTop_toBottomOf="@+id/password_confirm"
+        app:layout_constraintStart_toStartOf="@+id/c_password"
+        app:layout_constraintTop_toBottomOf="@+id/c_password"
         app:layout_constraintVertical_bias="0.171" />
 
     <Button
@@ -158,6 +162,6 @@
         app:layout_constraintEnd_toStartOf="@+id/sign_up_as_doctor"
         app:layout_constraintHorizontal_bias="0.716"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/c_password"
         app:layout_constraintVertical_bias="0.171" />
 </androidx.constraintlayout.widget.ConstraintLayout>
