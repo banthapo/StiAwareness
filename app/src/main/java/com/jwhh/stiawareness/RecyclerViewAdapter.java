@@ -8,48 +8,38 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder>{
 
     private Context context;
-    DoctorModel doctorModel;
-    DatabaseManager databaseManager;
+    private List<DoctorModel> doctorModel;
 
-    private ArrayList<String> names ;
-    private ArrayList<String> pNumber ;
-    private ArrayList<String> email ;
-    private RecyclerView recyclerView;
-
-    public RecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> pNumber, ArrayList<String> email) {
+    public RecyclerViewAdapter(Context context, List<DoctorModel> doctorModel) {
         this.context = context;
-       // this.doctorModel = doctorModel;
-        this.names = names;
-        this.pNumber = pNumber;
-        this.email = email;
+        this.doctorModel = doctorModel;
     }
-
 
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       View doctorView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_doctors, parent, false);
-        RecyclerViewHolder doctorViewHolder = new RecyclerViewHolder(doctorView);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View doctorView = inflater.inflate(R.layout.layout_doctors, parent, false);
 
-        return doctorViewHolder;
+        return new RecyclerViewHolder(doctorView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        holder.name.setText(names.get(position));
-        holder.email.setText(email.get(position));
-        holder.pNumber.setText(pNumber.get(position));
+        holder.name.setText(doctorModel.get(position).getName());
+        holder.email.setText(doctorModel.get(position).getEmailAddress());
+        holder.pNumber.setText(doctorModel.get(position).getPhoneNumber());
 
     }
 
     @Override
     public int getItemCount() {
-        return names.size();
+        return doctorModel.size();
     }
 }

@@ -35,8 +35,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         try {
-            String doctorStatement = "CREATE TABLE " + DOCTOR_TABLE + " (" + DOCTOR_TITLE + " TEXT, " + DOCTOR_FIRST_NAME + " TEXT, " +
-                    DOCTOR_SURNAME + " TEXT, " + DOCTOR_PHONE_NUMBER + " INTEGER PRIMARY KEY, " + DOCTOR_EMAIL_ADDRESS + " TEXT)";
+            String doctorStatement = "CREATE TABLE " + DOCTOR_TABLE + " (" + DOCTOR_TITLE + " TEXT , " + DOCTOR_FIRST_NAME + " TEXT , " +
+                    DOCTOR_SURNAME + " TEXT, " + DOCTOR_PHONE_NUMBER + " INTEGER PRIMARY KEY , " + DOCTOR_EMAIL_ADDRESS + " TEXT )";
 
             String memberStatement = "CREATE TABLE " + MEMBER_TABLE + " ( " + SPACENAME + " TEXT , " + PHONE_NUMBER +
                     " INT PRIMARY KEY , " + PASSWORD + " TEXT)";
@@ -239,10 +239,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> returnDoctors = new ArrayList<>();
 
-        String queryString = "SELECT " + DOCTOR_TITLE + " ," + DOCTOR_FIRST_NAME + " ," + DOCTOR_SURNAME + " WHERE " + DOCTOR_TITLE + " LIKE " + name + " OR " +
-                DOCTOR_FIRST_NAME + " LIKE " + name + " OR " + DOCTOR_SURNAME + " LIKE " + name;
-
-        Cursor cursor = db.rawQuery(queryString, null);
+        Cursor cursor = db.rawQuery(" SELECT * FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_TITLE + " LIKE ? OR " +
+                DOCTOR_FIRST_NAME + " LIKE ? OR " + DOCTOR_SURNAME + " LIKE  ? ", new String[] {"%"+name+"%", "%"+name+"%","%"+name+"%"});
 
         if (cursor.moveToFirst()) {
 

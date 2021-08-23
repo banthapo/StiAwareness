@@ -22,6 +22,7 @@ public class SignUp extends AppCompatActivity {
     private EditText phoneNumber;
     private EditText password;
     private EditText confirmPassword;
+
     private boolean success;
     private ImageView backButton;
     private Button doctorSignUp;
@@ -86,9 +87,30 @@ public class SignUp extends AppCompatActivity {
 
     private void successCases(DatabaseManager memberDatabase, MemberModel memberModel) {
 
+        String getSpaceName = spaceName.getText().toString();
+        String getPassword = password.getText().toString();
+        String getPasswordConfirm = confirmPassword.getText().toString();
+
         boolean spaceNameLength = spaceName.length() < 10;
         boolean phoneNumberLength = phoneNumber.length()  < 3;
         boolean passwordLength = password.length() < 3 ;
+        boolean checkPassword = getPassword == getPasswordConfirm;
+
+        boolean checkSpaceName = memberDatabase.checkSpaceName(getSpaceName);
+
+        if (checkPassword){
+            success = true;
+        } else {
+            Toast.makeText(SignUp.this, "Passwords to not match", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (checkSpaceName){
+            success = true;
+        } else {
+            Toast.makeText(SignUp.this, "Spacename already exists", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (spaceNameLength) {
             success = true;

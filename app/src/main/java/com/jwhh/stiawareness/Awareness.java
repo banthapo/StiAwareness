@@ -22,9 +22,9 @@ public class Awareness extends AppCompatActivity {
         binding = ActivityAwarenessBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         counsellingButton = findViewById(R.id.counselling_button);
         backButton = findViewById(R.id.from_awareness);
+
 
         counsellingButton.setOnClickListener(v -> {
             Intent intent = new Intent(Awareness.this, AvailableDoctors.class);
@@ -38,4 +38,17 @@ public class Awareness extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+

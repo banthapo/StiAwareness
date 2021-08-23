@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,14 +22,15 @@ public class AvailableDoctors extends AppCompatActivity {
     private ListView doctorList;
     private String doctorDetails;
     private ImageView backButton;
+    private String searchResults;
 
 //    private ArrayList<DoctorModel> listDoctors;
 
 //    private RecyclerView recyclerView;
 //    private RecyclerView.LayoutManager layoutManager;
 
-//    private ImageView searchDoctorName;
-//    private EditText searchText;
+    private ImageView searchDoctorName;
+    private EditText searchText;
 //    private ArrayList<String> doctorNames = new ArrayList<>();
 //    private ArrayList<String> doctorEmail = new ArrayList<>();
 //    private ArrayList<String> doctorNumber = new ArrayList<>();
@@ -43,9 +45,10 @@ public class AvailableDoctors extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-//
-//            searchDoctorName = findViewById(R.id.search_doctor);
-//            searchText = findViewById(R.id.search_doctor_text);
+
+            searchDoctorName = findViewById(R.id.search_doctor);
+            searchText = findViewById(R.id.search_doctor_text);
+
             doctorList = findViewById(R.id.doctor_list_view);
             backButton = findViewById(R.id.from_available_doctors);
 
@@ -66,6 +69,29 @@ public class AvailableDoctors extends AppCompatActivity {
         });
 
     } catch (Exception e){}
+
+    searchDoctorName.setOnClickListener(new View.OnClickListener() {
+        private DatabaseManager databaseManager;
+
+        @Override
+        public void onClick(View v) {
+            try {
+                databaseManager = new DatabaseManager(AvailableDoctors.this);
+                String search = searchText.getText().toString();
+
+                List<String> searchedDoctor = this.databaseManager.getDoctorSearched(search);
+                ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1, searchedDoctor);
+
+                if (search == "") {
+                    displayDoctorName();
+                    return;
+                } else {
+                    doctorList.setAdapter(doctorArrayAdapter);
+                }
+            } catch (Exception e){
+            }
+        }
+    });
 
     }
 

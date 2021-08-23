@@ -6,20 +6,15 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <SearchView
-        android:id="@+id/search_button"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="24dp"
-        android:inputType="text"
-        android:queryHint="search"
-        app:layout_constraintBottom_toTopOf="@+id/sti_info_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.483" />
+        android:layout_height="0dp"
+        android:layout_below="@+id/search_view"
+        app:layout_constraintEnd_toEndOf="@+id/search_view"
+        app:layout_constraintStart_toStartOf="@+id/search_view"
+        app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
     <Button
         android:id="@+id/sti_info_button"
@@ -56,11 +51,20 @@
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/search_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.571"
         app:srcCompat="@drawable/ic" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="401dp"
+        android:layout_height="43dp"
+        app:layout_constraintBottom_toTopOf="@+id/sti_info_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/from_awareness"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
