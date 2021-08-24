@@ -11,6 +11,10 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.StiAwareness.AppBarOverlay"/>
 
-    <include layout="@layout/content_available_doctors" />
+
+    <include
+        layout="@layout/content_available_doctors"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

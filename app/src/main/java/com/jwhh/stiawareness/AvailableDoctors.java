@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,18 +23,11 @@ public class AvailableDoctors extends AppCompatActivity {
     private ImageView backButton;
     private String searchResults;
 
-//    private ArrayList<DoctorModel> listDoctors;
-
-//    private RecyclerView recyclerView;
-//    private RecyclerView.LayoutManager layoutManager;
 
     private ImageView searchDoctorName;
     private EditText searchText;
-//    private ArrayList<String> doctorNames = new ArrayList<>();
-//    private ArrayList<String> doctorEmail = new ArrayList<>();
-//    private ArrayList<String> doctorNumber = new ArrayList<>();
 
-    private DatabaseManager databaseManager ;
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +35,6 @@ public class AvailableDoctors extends AppCompatActivity {
 
         binding = ActivityAvailableDoctorsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
 
         searchDoctorName = findViewById(R.id.search_doctor);
         searchText = findViewById(R.id.search_doctor_text);
@@ -59,18 +49,24 @@ public class AvailableDoctors extends AppCompatActivity {
             startActivity(intent);
         });
 
-        try {
-            doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    delete(parent, position);
+        doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//            try {
+                String clickedDoctor = (String) parent.getItemAtPosition(position);
+                databaseManager.deleteDoctor(clickedDoctor);
 
-    //                displayDoctorName();
-                }
-            });
+                displayDoctorName();
+//            } catch (Exception e) {
+//                Toast.makeText(AvailableDoctors.this, "Delete failed", Toast.LENGTH_LONG).show();
+//            }
+            }
+        });
 
-        } catch (Exception e){}
+        searchDoctor();
+    }
 
+    private void searchDoctor() {
         searchDoctorName.setOnClickListener(new View.OnClickListener() {
             private DatabaseManager databaseManager;
 
@@ -83,52 +79,28 @@ public class AvailableDoctors extends AppCompatActivity {
                     List<String> searchedDoctor = this.databaseManager.getDoctorSearched(search);
                     ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1, searchedDoctor);
 
-                    if (search == "") {
-                        displayDoctorName();
-                        return;
-                    } else {
-                        doctorList.setAdapter(doctorArrayAdapter);
-                    }
+                    doctorList.setAdapter(doctorArrayAdapter);
+
                 } catch (Exception e){
+                    displayDoctorName();
                 }
             }
         });
-
-        }
-
-        //displaying doctor names to listview
-        public void doctorDetails() {
-                databaseManager = new DatabaseManager(AvailableDoctors.this);
-
-                List<DoctorModel> allDoctors = this.databaseManager.getDoctorDetails();
-                ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 , allDoctors);
-
-                doctorDetails = doctorArrayAdapter.toString();
-
-        }
+    }
 
 
-        //method for deleting doctors
-        private void delete(AdapterView<?> parent, int position) {
-            try{
-                DoctorModel clickedDoctor = (DoctorModel) parent.getItemAtPosition(position);
-                databaseManager.deleteDoctor(clickedDoctor);
 
-                Toast.makeText(AvailableDoctors.this, "Successfully deleted" + clickedDoctor, Toast.LENGTH_LONG).show();
-                displayDoctorName();
-            }catch(Exception e){
-                Toast.makeText(AvailableDoctors.this, "Delete failed", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        public void displayDoctorName(){
+    public void displayDoctorName(){
+        try {
             databaseManager = new DatabaseManager(AvailableDoctors.this);
 
             List<String> allDoctors = databaseManager.getDoctorName();
             ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 , allDoctors);
 
             doctorList.setAdapter( doctorArrayAdapter);
-        }
+        } catch (Exception e){}
+
+    }
 
         //getting doctors full details
       /*  public void displayDoctorInfo() {
@@ -150,32 +122,29 @@ public class AvailableDoctors extends AppCompatActivity {
             }
 
         }*/
-        //setting up recyclerView
 
-    /*    private  void gettingDoctors(){
-    //        doctorNames.add(databaseManager.getDoctorName().toString());
-    //        doctorNumber.add(databaseManager.getDoctorName().toString());
-    //        doctorEmail.add(databaseManager.getDoctorName().toString());
+    //displaying doctor names to listview
+       /* public void doctorDetails() {
+                databaseManager = new DatabaseManager(AvailableDoctors.this);
 
+                List<DoctorModel> allDoctors = this.databaseManager.getDoctorDetails();
+                ArrayAdapter doctorArrayAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 , allDoctors);
+
+                doctorDetails = doctorArrayAdapter.toString();
 
         }*/
 
-      /*  public void searchResults(String text){
-            databaseManager = new DatabaseManager(AvailableDoctors.this);
 
-            List<String> searchedDoctors = databaseManager.getDoctorSearched(text);
+    //method for deleting doctors
+       /* private void delete(AdapterView<?> parent, int position) {
 
-            ArrayAdapter searchedDoctorAdapter = new ArrayAdapter(AvailableDoctors.this, android.R.layout.simple_list_item_1 , searchedDoctors);
-            doctorList.setAdapter(searchedDoctorAdapter);
+                Toast.makeText(AvailableDoctors.this, "Successfully deleted" + clickedDoctor, Toast.LENGTH_LONG).show();
+        }*/
 
-        }
-    */
 
-    /*
         public int getDoctorCount(){
 
             return doctorList.getCount();
         }
 
-     */
 }

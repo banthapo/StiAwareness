@@ -4,12 +4,13 @@ public class DoctorModel {
     private String title, firstName, surname, emailAddress,name;
     private int phoneNumber;
 
-    public DoctorModel(String title, String firstName, String surname, int phoneNumber, String emailAddress) {
+    public DoctorModel(String title, String firstName, String surname, int phoneNumber, String emailAddress, String name) {
         this.title = title;
         this.firstName = firstName;
         this.surname = surname;
-        this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
     }
 
     @Override
@@ -63,11 +64,8 @@ public class DoctorModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setName(String name){
-        name = title + " " + firstName + " " + surname;
-        this.name = name;
-    }
     public String getName(){
-        return name;
+        return  name;
     }
+
 }

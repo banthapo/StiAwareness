@@ -24,10 +24,11 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public static final String SPACENAME = "SPACENAME";
     public static final String PHONE_NUMBER = "PHONE_NUMBER";
     public static final String PASSWORD = "PASSWORD";
+    public static final String DOCTOR_NAME = "DOCTOR_NAME";
 
 
     public DatabaseManager(@Nullable Context context ) {
-        super(context, "member_doctor.db", null, 3);
+        super(context, "member_doctor.db", null, 1);
 
     }
 
@@ -36,9 +37,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         try {
             String doctorStatement = "CREATE TABLE " + DOCTOR_TABLE + " (" + DOCTOR_TITLE + " TEXT , " + DOCTOR_FIRST_NAME + " TEXT , " +
-                    DOCTOR_SURNAME + " TEXT, " + DOCTOR_PHONE_NUMBER + " INTEGER PRIMARY KEY , " + DOCTOR_EMAIL_ADDRESS + " TEXT )";
+                    DOCTOR_SURNAME + " TEXT, " + DOCTOR_PHONE_NUMBER + " INTEGER PRIMARY KEY , " + DOCTOR_EMAIL_ADDRESS + " TEXT UNIQUE , " + DOCTOR_NAME +
+                    " TEXT )";
 
-            String memberStatement = "CREATE TABLE " + MEMBER_TABLE + " ( " + SPACENAME + " TEXT , " + PHONE_NUMBER +
+            String memberStatement = "CREATE TABLE " + MEMBER_TABLE + " ( " + SPACENAME + " TEXT UNIQUE , " + PHONE_NUMBER +
                     " INT PRIMARY KEY , " + PASSWORD + " TEXT)";
 
 
@@ -65,6 +67,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         cv.put(DOCTOR_SURNAME, doctorModel.getSurname());
         cv.put(DOCTOR_PHONE_NUMBER, doctorModel.getPhoneNumber());
         cv.put(DOCTOR_EMAIL_ADDRESS, doctorModel.getEmailAddress());
+        cv.put(DOCTOR_NAME, doctorModel.getName());
 
         long insert = db.insert(DOCTOR_TABLE, null, cv);
 
@@ -86,7 +89,81 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-    public List<DoctorModel> getDoctorDetails(){
+
+    public boolean deleteDoctor(String name) {
+        DoctorModel doctorModel = null;
+        boolean name1 = doctorModel.getName().equals(name);
+        String pNumber = null;
+
+        if (name1)
+           pNumber = String.valueOf(doctorModel.getPhoneNumber());
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String queryString = "DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
+
+        Cursor cursor = db.rawQuery(queryString , new String[] {pNumber});
+
+        if (cursor.moveToFirst()){
+            return true;
+        } else{
+            cursor.close();
+            return false;
+        }
+    }
+
+    public List<String> getDoctorName() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> returnDoctors = new ArrayList<>();
+
+        String queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE;
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                String name = cursor.getString(0);
+                returnDoctors.add( name);
+
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        db.close();
+
+        return returnDoctors;
+    }
+
+    public List<String> getDoctorSearched(String name){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> returnDoctors = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(" SELECT * FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_TITLE + " LIKE ? OR " +
+                DOCTOR_FIRST_NAME + " LIKE ? OR " + DOCTOR_SURNAME + " LIKE  ? ", new String[] {"%"+name+"%", "%"+name+"%","%"+name+"%"});
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                String title = cursor.getString(0);
+                String firstName = cursor.getString(1);
+                String surname = cursor.getString(2);
+
+                String fullName = title + " " + firstName+ " " + surname;
+
+                returnDoctors.add( fullName );
+
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        db.close();
+
+        return returnDoctors;
+    }
+
+   /* public List<DoctorModel> getDoctorDetails(){
         List<DoctorModel> returnDoctors = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + DOCTOR_TABLE;
@@ -103,8 +180,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 String surname = cursor.getString(2);
                 int phoneNumber = cursor.getInt(3);
                 String emailAddress = cursor.getString(4);
+                String name = cursor.getString(5);
 
-                DoctorModel newDoctor = new DoctorModel(title, firstName, surname, phoneNumber, emailAddress);
+                DoctorModel newDoctor = new DoctorModel(title, firstName, surname, phoneNumber, emailAddress, name);
                 returnDoctors.add(newDoctor);
 
             } while(cursor.moveToNext());
@@ -115,7 +193,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return returnDoctors ;
     }
-
+*/
     public List<MemberModel> getMemberDetails(){
         List<MemberModel> returnMembers = new ArrayList<>();
 
@@ -144,50 +222,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnMembers;
     }
 
-    public boolean deleteDoctor(DoctorModel doctorModel) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String queryString = "DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = " +
-                doctorModel.getPhoneNumber();
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst()){
-            return true;
-        } else{
-            cursor.close();
-            return false;
-        }
-    }
-
-    public List<String> getDoctorName() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<String> returnDoctors = new ArrayList<>();
-
-        String queryString = "SELECT " + DOCTOR_TITLE + " , " + DOCTOR_FIRST_NAME + " , " +
-                DOCTOR_SURNAME + " FROM " + DOCTOR_TABLE;
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst()) {
-
-            do {
-                String title = cursor.getString(0);
-                String firstName = cursor.getString(1);
-                String surname = cursor.getString(2);
-
-                String name = title + " " + firstName + " " + surname;
-                returnDoctors.add( name );
-
-            } while (cursor.moveToNext());
-
-        }
-        cursor.close();
-        db.close();
-
-        return returnDoctors;
-    }
 
     public List<String> getDoctorNumber(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -235,32 +269,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnEmailAddresses;
     }
 
-    public List<String> getDoctorSearched(String name){
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<String> returnDoctors = new ArrayList<>();
-
-        Cursor cursor = db.rawQuery(" SELECT * FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_TITLE + " LIKE ? OR " +
-                DOCTOR_FIRST_NAME + " LIKE ? OR " + DOCTOR_SURNAME + " LIKE  ? ", new String[] {"%"+name+"%", "%"+name+"%","%"+name+"%"});
-
-        if (cursor.moveToFirst()) {
-
-            do {
-                String title = cursor.getString(0);
-                String firstName = cursor.getString(1);
-                String surname = cursor.getString(2);
-
-                String fullName = title + " " + firstName+ " " + surname;
-
-                returnDoctors.add( fullName );
-
-            } while (cursor.moveToNext());
-
-        }
-        cursor.close();
-        db.close();
-
-        return returnDoctors;
-    }
 
     public boolean checkSpaceName(String spaceName) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();

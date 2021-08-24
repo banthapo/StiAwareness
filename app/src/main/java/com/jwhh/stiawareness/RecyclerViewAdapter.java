@@ -32,7 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
 
-        holder.name.setText(doctorModel.get(position).getName());
+//        holder.name.setText(doctorModel.get(position));
         holder.email.setText(doctorModel.get(position).getEmailAddress());
         holder.pNumber.setText(doctorModel.get(position).getPhoneNumber());
 

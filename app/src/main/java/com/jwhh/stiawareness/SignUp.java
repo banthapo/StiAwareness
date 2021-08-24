@@ -45,23 +45,21 @@ public class SignUp extends AppCompatActivity {
         confirmPassword = findViewById(R.id.c_password);
 
         doctorSignUp.setOnClickListener(v -> {
-            Intent doctorIntent = new Intent(SignUp.this, DoctorRegistry.class);
-            memberSignIn();
-            if (success){
+            if (memberSignIn()){
+
+                Intent doctorIntent = new Intent(SignUp.this, DoctorRegistry.class);
                 startActivity(doctorIntent);
-            } else {
-                return;
             }
         });
 
         memberSignUp.setOnClickListener(v -> {
             Intent memberIntent = new Intent(SignUp.this, LogIn.class);
-            memberSignIn();
 
-            if( success) {
+            if( memberSignIn()) {
                 startActivity(memberIntent);
+            } else {
+                return ;
             }
-
         });
 
         backButton.setOnClickListener(v -> {
@@ -71,7 +69,7 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    private void memberSignIn() {
+    private boolean memberSignIn() {
         DatabaseManager memberDatabase = new DatabaseManager(SignUp.this);
 
         try {
@@ -83,8 +81,9 @@ public class SignUp extends AppCompatActivity {
         }catch (Exception e){
             Toast.makeText(SignUp.this, "please fill all fields ", Toast.LENGTH_LONG).show();
             memberModel = new MemberModel(null, 0, null);
-        }
 
+        }
+        return  success;
     }
 
     private void successCases(DatabaseManager memberDatabase, MemberModel memberModel) {
@@ -131,6 +130,7 @@ public class SignUp extends AppCompatActivity {
             success = true;
         } else {
             Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_LONG).show();
+            success = false;
             return;
         }
 

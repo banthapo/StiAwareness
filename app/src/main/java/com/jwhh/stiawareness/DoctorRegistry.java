@@ -22,6 +22,7 @@ public class DoctorRegistry extends AppCompatActivity {
     private EditText emailAddress;
     private String name;
     private DoctorModel doctorModel;
+    private DoctorNameModel doctorNameModel;
 
     private ImageView backButton;
     private Button register;
@@ -42,8 +43,6 @@ public class DoctorRegistry extends AppCompatActivity {
             Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
             startActivity(intent);
         });
-
-
     }
 
     private void doctorRegistration(Button register) {
@@ -52,16 +51,18 @@ public class DoctorRegistry extends AppCompatActivity {
         sName = findViewById(R.id.doctor_surname);
         tNumber = findViewById(R.id.doctor_telephone_number);
         emailAddress = findViewById(R.id.doctor_email);
-        String name = title.toString() +" "+ fName.toString() +" "+ sName.toString() ;
 
         register.setOnClickListener(v -> {
 
             Intent intent = new Intent(DoctorRegistry.this, Awareness.class);
             DatabaseManager doctorDatabase = new DatabaseManager(DoctorRegistry.this);
 
+            name = title.getText().toString()+ " " +fName.getText().toString()+ " " +sName.getText().toString();
+
             try {
                 doctorModel = new DoctorModel(title.getText().toString(), fName.getText().toString(), sName.getText().toString()
-                        , Integer.parseInt(tNumber.getText().toString()), emailAddress.getText().toString());
+                        , Integer.parseInt(tNumber.getText().toString()), emailAddress.getText().toString(), name);
+
 
                 boolean success =  doctorDatabase.addDoctor(doctorModel);
 
@@ -73,9 +74,8 @@ public class DoctorRegistry extends AppCompatActivity {
                 }
 
             }catch (Exception e){
-
                 Toast.makeText(DoctorRegistry.this, "Fill all fields please ", Toast.LENGTH_LONG).show();
-                doctorModel = new DoctorModel(null, null, null, 0, null);
+                doctorModel = new DoctorModel(null, null, null, 0, null, null);
             }
 
 
