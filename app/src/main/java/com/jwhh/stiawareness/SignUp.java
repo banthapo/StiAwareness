@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jwhh.stiawareness.databinding.ActivitySignUpBinding;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends AppCompatActivity implements Runnable{
 
 
     private ActivitySignUpBinding binding;
@@ -32,26 +32,19 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        run();
 
-        doctorSignUp = findViewById(R.id.sign_up_as_doctor);
-        memberSignUp = findViewById(R.id.sign_up_as_member);
-        backButton = findViewById(R.id.from_sign_in);
+    }
 
-        spaceName = findViewById(R.id.space_name);
-        phoneNumber = findViewById(R.id.phone_number);
-        password = findViewById(R.id.password);
-        confirmPassword = findViewById(R.id.c_password);
+    private void backButton() {
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SignUp.this, LogIn.class);
 
-        doctorSignUp.setOnClickListener(v -> {
-            if (memberSignIn()){
-
-                Intent doctorIntent = new Intent(SignUp.this, DoctorRegistry.class);
-                startActivity(doctorIntent);
-            }
+            startActivity(intent);
         });
+    }
 
+    private void memberSignUp() {
         memberSignUp.setOnClickListener(v -> {
             Intent memberIntent = new Intent(SignUp.this, LogIn.class);
 
@@ -61,12 +54,16 @@ public class SignUp extends AppCompatActivity {
                 return ;
             }
         });
+    }
 
-        backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(SignUp.this, LogIn.class);
-            startActivity(intent);
+    private void doctorSignUp() {
+        doctorSignUp.setOnClickListener(v -> {
+            if (memberSignIn()){
+
+                Intent doctorIntent = new Intent(SignUp.this, DoctorRegistry.class);
+                startActivity(doctorIntent);
+            }
         });
-
     }
 
     private boolean memberSignIn() {
@@ -138,5 +135,26 @@ public class SignUp extends AppCompatActivity {
             memberDatabase.addMember(memberModel);
             Toast.makeText(SignUp.this, "successfully signed in", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void run() {
+        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        doctorSignUp = findViewById(R.id.sign_up_as_doctor);
+        memberSignUp = findViewById(R.id.sign_up_as_member);
+        backButton = findViewById(R.id.from_sign_in);
+
+        spaceName = findViewById(R.id.space_name);
+        phoneNumber = findViewById(R.id.phone_number);
+        password = findViewById(R.id.password);
+        confirmPassword = findViewById(R.id.c_password);
+
+        doctorSignUp();
+
+        memberSignUp();
+
+        backButton();
     }
 }

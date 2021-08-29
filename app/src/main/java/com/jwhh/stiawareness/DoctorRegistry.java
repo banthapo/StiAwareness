@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jwhh.stiawareness.databinding.ActivityDoctorRegistryBinding;
 
-public class DoctorRegistry extends AppCompatActivity {
+public class DoctorRegistry extends AppCompatActivity implements Runnable{
 
     private ActivityDoctorRegistryBinding binding;
 
@@ -22,7 +22,6 @@ public class DoctorRegistry extends AppCompatActivity {
     private EditText emailAddress;
     private String name;
     private DoctorModel doctorModel;
-    private DoctorNameModel doctorNameModel;
 
     private ImageView backButton;
     private Button register;
@@ -31,18 +30,7 @@ public class DoctorRegistry extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityDoctorRegistryBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        register = findViewById(R.id.register_button);
-        backButton = findViewById(R.id.from_doctor_registry);
-
-        doctorRegistration(register);
-
-        backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
-            startActivity(intent);
-        });
+       run();
     }
 
     private void doctorRegistration(Button register) {
@@ -82,4 +70,19 @@ public class DoctorRegistry extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void run() {
+        binding = ActivityDoctorRegistryBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        register = findViewById(R.id.register_button);
+        backButton = findViewById(R.id.from_doctor_registry);
+
+        doctorRegistration(register);
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
+            startActivity(intent);
+        });
+    }
 }

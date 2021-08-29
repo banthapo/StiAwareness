@@ -54,8 +54,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("DROP TABLE IF EXISTS MEMBER_TABLE");
+        db.execSQL("DROP TABLE IF EXISTS " + MEMBER_TABLE);
+        db.execSQL(" DROP TABLE IF EXISTS " + DOCTOR_TABLE);
 
+        onCreate(db);
     }
 
     public boolean addDoctor(DoctorModel doctorModel){
@@ -89,54 +91,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-
-    public boolean deleteDoctor(String name) {
-        DoctorModel doctorModel = null;
-        boolean name1 = doctorModel.getName().equals(name);
-        String pNumber = null;
-
-        if (name1)
-           pNumber = String.valueOf(doctorModel.getPhoneNumber());
-
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String queryString = "DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
-
-        Cursor cursor = db.rawQuery(queryString , new String[] {pNumber});
-
-        if (cursor.moveToFirst()){
-            return true;
-        } else{
-            cursor.close();
-            return false;
-        }
-    }
-
-    public List<String> getDoctorName() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<String> returnDoctors = new ArrayList<>();
-
-        String queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE;
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst()) {
-
-            do {
-                String name = cursor.getString(0);
-                returnDoctors.add( name);
-
-            } while (cursor.moveToNext());
-
-        }
-        cursor.close();
-        db.close();
-
-        return returnDoctors;
-    }
-
-    public List<String> getDoctorSearched(String name){
+    public List<String> doctorSearch(String name){
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> returnDoctors = new ArrayList<>();
 
@@ -163,37 +118,69 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnDoctors;
     }
 
-   /* public List<DoctorModel> getDoctorDetails(){
-        List<DoctorModel> returnDoctors = new ArrayList<>();
+    public boolean deleteDoctor(String pNumber) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        String queryString = "SELECT * FROM " + DOCTOR_TABLE;
+        String queryString = " DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
+
+        Cursor cursor = db.rawQuery(queryString , new String[] {pNumber});
+
+        if (cursor.moveToFirst()){
+            return true;
+        } else{
+            cursor.close();
+            return false;
+        }
+    }
+
+    public int getPhoneNumber(String name) {
+        int phoneNumber;
+
+        String queryString = "SELECT " + DOCTOR_PHONE_NUMBER + " , " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE + " WHERE " +
+                DOCTOR_NAME + " = ? ";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(queryString, null);
+        Cursor cursor = db.rawQuery(queryString, new String[]{name});
 
-        if (cursor.moveToFirst()){
-
-            do {
-                String title = cursor.getString(0);
-                String firstName = cursor.getString(1);
-                String surname = cursor.getString(2);
-                int phoneNumber = cursor.getInt(3);
-                String emailAddress = cursor.getString(4);
-                String name = cursor.getString(5);
-
-                DoctorModel newDoctor = new DoctorModel(title, firstName, surname, phoneNumber, emailAddress, name);
-                returnDoctors.add(newDoctor);
-
-            } while(cursor.moveToNext());
-        }
+        cursor.moveToFirst();
+        int number = cursor.getInt(0);
+        phoneNumber = number;
 
         cursor.close();
         db.close();
 
-        return returnDoctors ;
+        return phoneNumber;
+
     }
-*/
+
+    public List<DoctorModel> getDoctorDetails(String number){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<DoctorModel> details = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
+
+        Cursor cursor = db.rawQuery(queryString, new String[] {number});
+
+        cursor.moveToFirst();
+
+            String title = cursor.getString(0);
+            String fName = cursor.getString(1);
+            String sName = cursor.getString(2);
+            int pNumber = cursor.getInt(3);
+            String email = cursor.getString(4);
+            String fullName = cursor.getString(5);
+
+            DoctorModel doctorModel = new DoctorModel(title, fName, sName, pNumber, email, fullName );
+
+            details.add( doctorModel);
+
+            cursor.close();
+            db.close();
+
+        return details;
+    }
+
     public List<MemberModel> getMemberDetails(){
         List<MemberModel> returnMembers = new ArrayList<>();
 
@@ -222,20 +209,19 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnMembers;
     }
 
-
-    public List<String> getDoctorNumber(){
+    public ArrayList<String> getDoctorName() {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<String> returnPhoneNumbers = new ArrayList<>();
+        ArrayList<String> returnDoctors = new ArrayList<>();
 
-        String queryString = "SELECT " + DOCTOR_PHONE_NUMBER + " FROM " + DOCTOR_TABLE;
+        String queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE;
 
         Cursor cursor = db.rawQuery(queryString, null);
 
         if (cursor.moveToFirst()) {
 
             do {
-                String pNumber = cursor.getString(3);
-                returnPhoneNumbers.add( pNumber);
+                String name = cursor.getString(0);
+                returnDoctors.add( name);
 
             } while (cursor.moveToNext());
 
@@ -243,12 +229,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        return returnPhoneNumbers;
+        return returnDoctors;
     }
 
-    public List<String> getDoctorEmail(){
+    public ArrayList<String> getDoctorEmail(){
         SQLiteDatabase db = this.getReadableDatabase();
-        List<String> returnEmailAddresses = new ArrayList<>();
+        ArrayList<String> returnEmailAddresses = new ArrayList<>();
 
         String queryString = "SELECT " + DOCTOR_EMAIL_ADDRESS + " FROM " + DOCTOR_TABLE;
 
@@ -257,7 +243,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
 
             do {
-                String email = cursor.getString(4);
+                String email = cursor.getString(0);
                 returnEmailAddresses.add( email);
 
             } while (cursor.moveToNext());
@@ -269,6 +255,29 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnEmailAddresses;
     }
 
+    public ArrayList<String> getDoctorPhoneNumber(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> returnPhoneNumber = new ArrayList<>();
+
+        String queryString = "SELECT " + DOCTOR_PHONE_NUMBER+ " FROM " + DOCTOR_TABLE;
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                int phoneNumber = cursor.getInt(0);
+
+                returnPhoneNumber.add(String.valueOf(phoneNumber));
+
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        db.close();
+
+        return returnPhoneNumber;
+    }
 
     public boolean checkSpaceName(String spaceName) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -295,5 +304,24 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return false;
         }
 
+    }
+
+    public int firstPosition(){
+        SQLiteDatabase db = getReadableDatabase();
+
+        int firstPosition;
+
+        String queryString = "SELECT * FROM " + DOCTOR_TABLE  ;
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+       if (cursor.moveToFirst());
+        int number = cursor.getPosition();
+        firstPosition = number;
+
+        cursor.close();
+        db.close();
+
+        return firstPosition;
     }
 }

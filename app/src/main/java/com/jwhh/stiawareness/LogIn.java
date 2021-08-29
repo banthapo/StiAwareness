@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jwhh.stiawareness.databinding.ActivityLogInBinding;
 
 
-public class LogIn extends AppCompatActivity {
+public class LogIn extends AppCompatActivity implements Runnable {
 
 
     private ActivityLogInBinding binding;
@@ -28,13 +28,19 @@ public class LogIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityLogInBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+      run();
 
-        logIn = findViewById(R.id.login_button);
-        signUp = findViewById(R.id.sign_up_text);
+    }
 
+    private void signUp() {
+        signUp.setOnClickListener(v -> {
+            Intent intent = new Intent(LogIn.this, SignUp.class);
 
+            startActivity(intent);
+        });
+    }
+
+    private void logIn() {
         logIn.setOnClickListener(v -> {
                 spaceName = findViewById(R.id.login_name);
                 password = findViewById(R.id.login_password);
@@ -57,12 +63,20 @@ public class LogIn extends AppCompatActivity {
 
 
         });
+    }
 
-        signUp.setOnClickListener(v -> {
-            Intent intent = new Intent(LogIn.this, SignUp.class);
+    @Override
+    public void run() {
+        binding = ActivityLogInBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-            startActivity(intent);
-        });
+        logIn = findViewById(R.id.login_button);
+        signUp = findViewById(R.id.sign_up_text);
+
+
+        logIn();
+
+        signUp();
 
     }
 }
