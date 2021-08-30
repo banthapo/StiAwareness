@@ -96,7 +96,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         List<String> returnDoctors = new ArrayList<>();
 
         Cursor cursor = db.rawQuery(" SELECT * FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_TITLE + " LIKE ? OR " +
-                DOCTOR_FIRST_NAME + " LIKE ? OR " + DOCTOR_SURNAME + " LIKE  ? ", new String[] {"%"+name+"%", "%"+name+"%","%"+name+"%"});
+                DOCTOR_FIRST_NAME + " LIKE ? OR " + DOCTOR_SURNAME + " LIKE  ? ", new String[] {"%"+name+"%"});
 
         if (cursor.moveToFirst()) {
 
@@ -118,14 +118,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnDoctors;
     }
 
-    public boolean deleteDoctor(String pNumber) {
+    public boolean deleteDoctor(int pNumber) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String queryString = " DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
 
-        Cursor cursor = db.rawQuery(queryString , new String[] {pNumber});
+        Cursor cursor = db.rawQuery(queryString , new String[] {String.valueOf(pNumber)});
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToLast()){
             return true;
         } else{
             cursor.close();
@@ -152,6 +152,29 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         return phoneNumber;
 
+    }
+
+    public ArrayList<String> getDoctorName() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> returnDoctors = new ArrayList<>();
+
+        String queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE;
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                String name = cursor.getString(0);
+                returnDoctors.add( name);
+
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        db.close();
+
+        return returnDoctors;
     }
 
     public List<DoctorModel> getDoctorDetails(String number){
@@ -209,29 +232,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnMembers;
     }
 
-    public ArrayList<String> getDoctorName() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<String> returnDoctors = new ArrayList<>();
-
-        String queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE;
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-        if (cursor.moveToFirst()) {
-
-            do {
-                String name = cursor.getString(0);
-                returnDoctors.add( name);
-
-            } while (cursor.moveToNext());
-
-        }
-        cursor.close();
-        db.close();
-
-        return returnDoctors;
-    }
-
     public ArrayList<String> getDoctorEmail(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> returnEmailAddresses = new ArrayList<>();
@@ -255,9 +255,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnEmailAddresses;
     }
 
-    public ArrayList<String> getDoctorPhoneNumber(){
+    public ArrayList<Integer> getDoctorPhoneNumber(){
         SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<String> returnPhoneNumber = new ArrayList<>();
+        ArrayList<Integer> returnPhoneNumber = new ArrayList<>();
 
         String queryString = "SELECT " + DOCTOR_PHONE_NUMBER+ " FROM " + DOCTOR_TABLE;
 
@@ -268,7 +268,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             do {
                 int phoneNumber = cursor.getInt(0);
 
-                returnPhoneNumber.add(String.valueOf(phoneNumber));
+                returnPhoneNumber.add(phoneNumber);
 
             } while (cursor.moveToNext());
 
@@ -306,22 +306,4 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-    public int firstPosition(){
-        SQLiteDatabase db = getReadableDatabase();
-
-        int firstPosition;
-
-        String queryString = "SELECT * FROM " + DOCTOR_TABLE  ;
-
-        Cursor cursor = db.rawQuery(queryString, null);
-
-       if (cursor.moveToFirst());
-        int number = cursor.getPosition();
-        firstPosition = number;
-
-        cursor.close();
-        db.close();
-
-        return firstPosition;
-    }
 }

@@ -1,45 +1,86 @@
 package com.jwhh.stiawareness;
 
 
-import android.content.Context;
-import android.database.Cursor;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements View.OnClickListener{
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements View.OnClickListener , Filterable {
 
-    private Context context;
-    private Cursor cursor;
     private ArrayList<String> names;
     private ArrayList<String> email;
-    private ArrayList<String> pNum;
+    private ArrayList<Integer> pNum;
     private OnDoctorClickListener onDoctorClickListener;
-    private AvailableDoctors availableDoctors;
 
+    private ArrayList<String> allDoctors;
+    AvailableDoctors doctors = new AvailableDoctors();
 
-    public RecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> email, ArrayList<String> pNum, OnDoctorClickListener onDoctorClickListener) {
-        this.context = context;
+    public RecyclerViewAdapter(ArrayList<String> names, ArrayList<String> email, ArrayList<Integer> pNum, OnDoctorClickListener onDoctorClickListener) {
         this.names = names;
         this.email = email;
         this.pNum = pNum;
+        this.allDoctors = new ArrayList<>(names);
         this.onDoctorClickListener = onDoctorClickListener;
     }
 
     @Override
     public void onClick(View v) {
-//        availableDoctors = new AvailableDoctors();
-        String phoneNumber = (String) v.getTag();
+
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<String> filteredDoctors = new ArrayList<>();
+
+            if (constraint.toString().isEmpty()){
+               doctors.loadDoctors();
+
+            } else {
+                for (int i = 0, allDoctorsSize = allDoctors.size(); i < allDoctorsSize; i++) {
+                    String doctor = allDoctors.get(i);
+
+                    if(doctor.toLowerCase().contains(constraint.toString().toLowerCase())){
+                        filteredDoctors.add(doctor);
+                    }
+
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredDoctors;
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            names.clear();
+            if (constraint.toString().isEmpty()){
+                return;
+            }else {
+                names.addAll((Collection<? extends String>) results.values);
+                notifyDataSetChanged();
+            }
+        }
+    };
 
     public interface OnDoctorClickListener {
         void onDoctorClick(int position);
     }
-
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,28 +91,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         return doctorHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(RecyclerViewHolder doctorHolder, int position) {
 
             doctorHolder.name.setText(names.get(position));
             doctorHolder.email.setText(email.get(position));
-            doctorHolder.pNumber.setText(pNum.get(position));
+            doctorHolder.pNumber.setText(pNum.get(position).toString());
 
-//            int newPosition = Integer.parseInt(DatabaseManager.DOCTOR_PHONE_NUMBER) + position;
-
-            /*if(){
-                int secPos = cursor.getColumnIndex(DatabaseManager.DOCTOR_PHONE_NUMBER) + position;
-
-                if (cursor.moveToPosition(secPos)) {
-                    int phoneNumber = cursor.getInt(cursor.getColumnIndex(DatabaseManager.DOCTOR_PHONE_NUMBER));
-                    doctorHolder.itemView.setTag(phoneNumber);
-                }
-            }*/
     }
-
 
     @Override
     public int getItemCount() {
-        return pNum.size();
+        return names.size();
     }
 }
