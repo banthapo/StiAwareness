@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StiAwareness">
-        <activity android:name=".app.AwarenessDoctor"></activity>
+        <activity
+            android:name=".app.AwarenessDoctor"
+            android:label="@string/title_activity_awareness_doctor"
+            android:theme="@style/Theme.StiAwareness.NoActionBar"></activity>
         <activity
             android:name=".app.DoctorRegistry"
             android:label="@string/title_activity_doctor_registry"

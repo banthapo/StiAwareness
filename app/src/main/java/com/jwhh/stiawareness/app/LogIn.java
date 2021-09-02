@@ -62,14 +62,13 @@ public class LogIn extends AppCompatActivity implements Runnable {
                 Intent intent;
                 if (docName.equals(getName)){
                     intent = new Intent(LogIn.this, AwarenessDoctor.class);
-
-                    Toast.makeText(LogIn.this, "Log in successful" , Toast.LENGTH_LONG).show();
+                    intent.putExtra("strName", getName);
 
                 } else {
                     intent = new Intent(LogIn.this, Awareness.class);
 
-                    Toast.makeText(LogIn.this, "Log in successful" , Toast.LENGTH_LONG).show();
                 }
+                Toast.makeText(LogIn.this, "Log in successful" , Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
             }else {

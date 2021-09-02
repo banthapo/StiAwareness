@@ -159,8 +159,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public int getPhoneNumber(String name) {
         int phoneNumber;
 
-        String queryString = "SELECT " + DOCTOR_PHONE_NUMBER + " , " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE + " WHERE " +
-                DOCTOR_NAME + " = ? ";
+        String queryString = "SELECT " + DOCTOR_PHONE_NUMBER + " FROM " + MEMBER_TABLE + " WHERE " +
+                SPACENAME + " = ? ";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
