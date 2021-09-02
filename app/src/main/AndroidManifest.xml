@@ -9,24 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StiAwareness">
+        <activity android:name=".app.AwarenessDoctor"></activity>
         <activity
-            android:name=".DoctorRegistry"
+            android:name=".app.DoctorRegistry"
             android:label="@string/title_activity_doctor_registry"
-            android:theme="@style/Theme.StiAwareness.NoActionBar"/>
+            android:theme="@style/Theme.StiAwareness.NoActionBar" />
         <activity
-            android:name=".AvailableDoctors"
+            android:name=".app.AvailableDoctors"
             android:label="@string/title_activity_available_doctors"
             android:theme="@style/Theme.StiAwareness.NoActionBar" />
         <activity
-            android:name=".SignUp"
+            android:name=".app.SignUp"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/Theme.StiAwareness.NoActionBar" />
         <activity
-            android:name=".Awareness"
+            android:name=".app.Awareness"
             android:label="@string/title_activity_awareness"
             android:theme="@style/Theme.StiAwareness.NoActionBar" />
         <activity
-            android:name=".LogIn"
+            android:name=".app.LogIn"
             android:label="StiAwareness App"
             android:theme="@style/Theme.StiAwareness.NoActionBar">
             <intent-filter>

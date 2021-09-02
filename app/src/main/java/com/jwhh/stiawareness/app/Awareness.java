@@ -1,4 +1,4 @@
-package com.jwhh.stiawareness;
+package com.jwhh.stiawareness.app;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jwhh.stiawareness.R;
 import com.jwhh.stiawareness.databinding.ActivityAwarenessBinding;
 
 public class Awareness extends AppCompatActivity implements Runnable{

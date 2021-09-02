@@ -1,4 +1,4 @@
-package com.jwhh.stiawareness;
+package com.jwhh.stiawareness.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import com.jwhh.stiawareness.models.DoctorModel;
+import com.jwhh.stiawareness.models.MemberModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,6 +135,26 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return false;
         }
     }
+    public  List<String> memberDoctors(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> returnMemberDoctors = new ArrayList<>();
+
+        String queryString = " SELECT " + SPACENAME + " FROM " + MEMBER_TABLE + ", " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = " + PHONE_NUMBER;
+
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()){
+            do {
+                String spaceName = cursor.getString(0);
+
+                returnMemberDoctors.add(spaceName);
+            } while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return returnMemberDoctors;
+    }
 
     public int getPhoneNumber(String name) {
         int phoneNumber;
@@ -204,12 +227,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return details;
     }
 
+
+
     public List<MemberModel> getMemberDetails(){
+        SQLiteDatabase db = this.getReadableDatabase();
         List<MemberModel> returnMembers = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + MEMBER_TABLE;
-
-        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(queryString, null);
 
@@ -280,9 +304,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public boolean checkSpaceName(String spaceName) {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE SPACENAME = ?", new String[]{spaceName});
+        Cursor cursor = db.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE SPACENAME = ?", new String[]{spaceName});
 
         if (cursor.getCount() > 0) {
             return false;
@@ -293,9 +317,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public boolean checkLogDetails(String spaceName, String password){
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ? AND " +
+        Cursor cursor = db.rawQuery(" SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ? AND " +
                 PASSWORD + " = ? ", new String[] {spaceName, password});
 
         if (cursor.getCount() > 0){

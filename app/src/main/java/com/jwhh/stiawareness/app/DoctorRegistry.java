@@ -1,4 +1,4 @@
-package com.jwhh.stiawareness;
+package com.jwhh.stiawareness.app;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,19 +9,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jwhh.stiawareness.R;
+import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivityDoctorRegistryBinding;
+import com.jwhh.stiawareness.models.DoctorModel;
+import com.jwhh.stiawareness.models.MemberModel;
 
 public class DoctorRegistry extends AppCompatActivity implements Runnable{
 
     private ActivityDoctorRegistryBinding binding;
 
-    private EditText title;
-    private EditText fName;
-    private EditText sName;
-    private EditText tNumber;
-    private EditText emailAddress;
+    private EditText title, fName, sName, emailAddress;
+    private int tNumber;
     private String name;
     private DoctorModel doctorModel;
+    private MemberModel memberModel;
 
     private ImageView backButton;
     private Button register;
@@ -37,7 +39,7 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
         title = findViewById(R.id.doctor_title);
         fName = findViewById(R.id.first_name);
         sName = findViewById(R.id.doctor_surname);
-        tNumber = findViewById(R.id.doctor_telephone_number);
+//        tNumber = findViewById(R.id.doctor_telephone_number);
         emailAddress = findViewById(R.id.doctor_email);
 
         register.setOnClickListener(v -> {
@@ -46,10 +48,11 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
             DatabaseManager doctorDatabase = new DatabaseManager(DoctorRegistry.this);
 
             name = title.getText().toString()+ " " +fName.getText().toString()+ " " +sName.getText().toString();
+            tNumber = SignUp.getPhoneNumber();
 
             try {
                 doctorModel = new DoctorModel(title.getText().toString(), fName.getText().toString(), sName.getText().toString()
-                        , Integer.parseInt(tNumber.getText().toString()), emailAddress.getText().toString(), name);
+                        , tNumber , emailAddress.getText().toString(), name);
 
 
                 boolean success =  doctorDatabase.addDoctor(doctorModel);

@@ -1,4 +1,4 @@
-package com.jwhh.stiawareness;
+package com.jwhh.stiawareness.models;
 
 public class MemberModel {
     private String spaceName;

@@ -36,18 +36,6 @@
         app:layout_constraintTop_toBottomOf="@+id/doctor_email"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/doctor_telephone_number_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Telephone Number"
-        android:textColor="#DA5187E4"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/doctor_surname_text"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_surname" />
-
     <EditText
         android:id="@+id/doctor_email"
         android:layout_width="0dp"
@@ -57,10 +45,8 @@
         android:hint="eg. bawo@yahoo.com"
         android:inputType="textEmailAddress"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/doctor_telephone_number"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/doctor_telephone_number"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_email_text" />
+        app:layout_constraintTop_toBottomOf="@+id/doctor_email_text"
+        tools:layout_editor_absoluteX="97dp" />
 
     <TextView
         android:id="@+id/doctor_title_text"
@@ -76,20 +62,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.138" />
-
-    <EditText
-        android:id="@+id/doctor_telephone_number"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:ems="10"
-        android:hint="eg. 01 978 ..."
-        android:inputType="phone"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/doctor_surname"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/doctor_surname"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_telephone_number_text" />
 
     <EditText
         android:id="@+id/first_name"
@@ -139,8 +111,8 @@
         android:textColor="#DA5187E4"
         android:textSize="18dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/doctor_telephone_number_text"
-        app:layout_constraintTop_toBottomOf="@+id/doctor_telephone_number" />
+        app:layout_constraintStart_toStartOf="@+id/doctor_surname_text"
+        app:layout_constraintTop_toBottomOf="@+id/doctor_surname" />
 
     <TextView
         android:id="@+id/first_name_text"

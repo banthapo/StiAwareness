@@ -1,4 +1,4 @@
-package com.jwhh.stiawareness;
+package com.jwhh.stiawareness.app;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jwhh.stiawareness.R;
+import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivitySignUpBinding;
+import com.jwhh.stiawareness.models.MemberModel;
 
 public class SignUp extends AppCompatActivity implements Runnable{
 
@@ -23,6 +26,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
     private EditText password;
     private EditText confirmPassword;
 
+    private static int pNumber;
     private boolean success;
     private ImageView backButton;
     private Button doctorSignUp;
@@ -83,7 +87,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         return  success;
     }
 
-    private void successCases(DatabaseManager memberDatabase, MemberModel memberModel) {
+    private void successCases(DatabaseManager database, MemberModel memberModel) {
 
         String getSpaceName = spaceName.getText().toString();
         String getPassword = password.getText().toString();
@@ -94,7 +98,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         boolean passwordLength = password.length() < 3 ;
         boolean checkPassword = getPassword.equals(getPasswordConfirm);
 
-        boolean checkSpaceName = memberDatabase.checkSpaceName(getSpaceName);
+        boolean checkSpaceName = database.checkSpaceName(getSpaceName);
 
         if (checkSpaceName){
             success = true;
@@ -132,7 +136,8 @@ public class SignUp extends AppCompatActivity implements Runnable{
         }
 
         if (success){
-            memberDatabase.addMember(memberModel);
+            pNumber = Integer.parseInt(phoneNumber.getText().toString());
+            database.addMember(memberModel);
             Toast.makeText(SignUp.this, "successfully signed in", Toast.LENGTH_LONG).show();
         }
     }
@@ -156,5 +161,9 @@ public class SignUp extends AppCompatActivity implements Runnable{
         memberSignUp();
 
         backButton();
+    }
+
+    public static int getPhoneNumber(){
+        return pNumber;
     }
 }

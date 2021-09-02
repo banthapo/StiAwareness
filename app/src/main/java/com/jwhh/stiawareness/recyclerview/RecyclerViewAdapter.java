@@ -1,4 +1,4 @@
-package com.jwhh.stiawareness;
+package com.jwhh.stiawareness.recyclerview;
 
 
 import android.annotation.SuppressLint;
@@ -9,6 +9,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.jwhh.stiawareness.app.AvailableDoctors;
+import com.jwhh.stiawareness.R;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.jwhh.stiawareness;
+package com.jwhh.stiawareness.models;
 
 public class DoctorModel {
     private String title, firstName, surname, emailAddress,name;
@@ -58,10 +58,6 @@ public class DoctorModel {
 
     public int getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getName(){
