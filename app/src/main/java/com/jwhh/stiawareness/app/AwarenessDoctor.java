@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,16 +23,19 @@ import com.jwhh.stiawareness.databinding.ActivityAwarenessDoctorBinding;
 public class AwarenessDoctor extends AppCompatActivity {
 
     private ActivityAwarenessDoctorBinding binding;
-    private Button unregister, update;
+    private Button unregister, update, updateDoctor;
     private int phoneNumber;
     private Intent intent;
-    private String spaceName, doctorName;
+    private String spaceName, doctorName, docTitle, docFirstname, docSurname, docEmail;
     private TextView docName;
+    private EditText title, firstName, surname, email;
     private PopupWindow popupWindow = null;
+    private DisplayMetrics displayMetrics ;
 
     private DatabaseManager databaseManager = new DatabaseManager(AwarenessDoctor.this);
-    private DisplayMetrics displayMetrics ;
     private LayoutInflater inflater;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,10 @@ public class AwarenessDoctor extends AppCompatActivity {
         phoneNumber = databaseManager.getPhoneNumber(spaceName);
         doctorName = databaseManager.getDoctorName(phoneNumber);
 
+        update.setOnClickListener(v -> {
+            showPopup();
+        });
+
         unregister.setOnClickListener(v -> {
             intent = new Intent(AwarenessDoctor.this, LogIn.class);
 
@@ -65,61 +73,58 @@ public class AwarenessDoctor extends AppCompatActivity {
 
         });
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                showPopup();
+        binding.fab.setOnClickListener(view ->
                 Snackbar.make(view, "you have: 0 messages", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+                .setAction("Action", null).show());
 
-            private void showPopup() {
-                displayMetrics = getResources().getDisplayMetrics();
-                inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
 
-                int width = displayMetrics.widthPixels;
-                int height = displayMetrics.heightPixels;
+    private void showPopup() {
+        displayMetrics = getResources().getDisplayMetrics();
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.update_layout, null);
-                docName = (TextView) layout.findViewById(R.id.update_textview);
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                popupWindow = new PopupWindow();
-                popupWindow.setContentView(layout);
-                popupWindow.setWidth(width);
-                popupWindow.setHeight(height);
-                popupWindow.setFocusable(true);
+        View layout = inflater.inflate(R.layout.update_layout, null);
 
-                popupWindow.setBackgroundDrawable(null);
-                popupWindow.showAtLocation(layout, Gravity.CENTER, 2, 0);
+        updateDoctor = (Button) layout.findViewById(R.id.update_button);
+        title = (EditText) layout.findViewById(R.id.update_title);
+        firstName = (EditText) layout.findViewById(R.id.update_firstname);
+        surname = (EditText) layout.findViewById(R.id.update_surname);
+        email = (EditText) layout.findViewById(R.id.update_email);
+
+        popupWindow = new PopupWindow();
+        popupWindow.setContentView(layout);
+        popupWindow.setWidth(width);
+        popupWindow.setHeight(height);
+        popupWindow.setFocusable(true);
+
+        popupWindow.setBackgroundDrawable(null);
+        popupWindow.showAtLocation(layout, Gravity.CENTER, 2, 0);
+
+      updateDoctor.setOnClickListener(v -> {
+          docTitle = title.getText().toString();
+          docFirstname = firstName.getText().toString();
+          docSurname = surname.getText().toString();
+          docEmail = email.getText().toString();
+
+          phoneNumber = databaseManager.getPhoneNumber(spaceName);
+
+          try {
+              String docName = docTitle + " " + docFirstname + " " + docSurname;
+              databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, phoneNumber, docName);
+              String name = databaseManager.getDoctorName(phoneNumber);
+
+              Toast.makeText(AwarenessDoctor.this, name, Toast.LENGTH_LONG).show();
+          } catch (Exception e){
+              Toast.makeText(AwarenessDoctor.this, "update failed!", Toast.LENGTH_LONG).show();
+          }
 
 
-                Toast.makeText(AwarenessDoctor.this, "successful" + doctorName, Toast.LENGTH_SHORT).show();
-            }
-        });
+      });
 
-       /* private void showPopup(){
-            displayMetrics = this.getResources().getDisplayMetrics();
-            int width = displayMetrics.widthPixels;
-            int height = displayMetrics.heightPixels;
-
-            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.update_layout, null);
-            docName = (TextView) layout.findViewById(R.id.update_textview);
-
-            popupWindow.setContentView(layout);
-            popupWindow.setWidth(width);
-            popupWindow.setHeight(height);
-            popupWindow.setFocusable(true);
-
-            popupWindow.setBackgroundDrawable(null);
-            popupWindow.showAtLocation(layout, Gravity.CENTER, 2, 0);
-
-
-            docName.setText(doctorName);
-
-            Toast.makeText(AwarenessDoctor.this, "successful" + doctorName, Toast.LENGTH_SHORT).show();
-        }*/
-
+        Toast.makeText(AwarenessDoctor.this, "successful" + doctorName, Toast.LENGTH_SHORT).show();
     }
 }

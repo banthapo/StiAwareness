@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/update_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:id="@+id/update_view">
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
+        android:layout_height="351dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="220dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="260dp"
+        android:layout_marginTop="203dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="177dp"
         android:background="#F0EFF6"
         android:gravity="center"
         android:orientation="vertical">
@@ -93,35 +93,57 @@
                     android:orientation="vertical">
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName"
-                        android:layout_width="match_parent"
+                        android:id="@+id/update_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:ems="10"
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName2"
-                        android:layout_width="match_parent"
+                        android:id="@+id/update_firstname"
+                        android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:ems="10"
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName3"
-                        android:layout_width="match_parent"
+                        android:id="@+id/update_surname"
+                        android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:ems="10"
                         android:inputType="textPersonName" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName4"
-                        android:layout_width="match_parent"
+                        android:id="@+id/update_email"
+                        android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:ems="10"
                         android:inputType="textPersonName" />
                 </LinearLayout>
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/update_button"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="update"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="cancel"
+                android:textSize="20sp" />
         </LinearLayout>
 
     </LinearLayout>
