@@ -196,7 +196,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<String> getDoctorName() {
+    public ArrayList<String> getDoctorNames() {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<String> returnDoctors = new ArrayList<>();
 
@@ -219,33 +219,22 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnDoctors;
     }
 
-    public List<DoctorModel> getDoctorDetails(String number){
+    public String getDoctorName(int number){
         SQLiteDatabase db = this.getReadableDatabase();
-        List<DoctorModel> details = new ArrayList<>();
+        String doctorName;
 
-        String queryString = "SELECT * FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
+        String queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
 
-        Cursor cursor = db.rawQuery(queryString, new String[] {number});
+        Cursor cursor = db.rawQuery(queryString, new String[] {String.valueOf(number)});
 
         cursor.moveToFirst();
-
-            String title = cursor.getString(0);
-            String fName = cursor.getString(1);
-            String sName = cursor.getString(2);
-            int pNumber = cursor.getInt(3);
-            String email = cursor.getString(4);
-            String fullName = cursor.getString(5);
-
-            DoctorModel doctorModel = new DoctorModel(title, fName, sName, pNumber, email, fullName );
-
-            details.add( doctorModel);
+            doctorName = cursor.getString(0);
 
             cursor.close();
             db.close();
 
-        return details;
+        return doctorName;
     }
-
 
 
     public List<MemberModel> getMemberDetails(){

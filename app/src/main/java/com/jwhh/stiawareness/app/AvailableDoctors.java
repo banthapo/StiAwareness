@@ -35,15 +35,13 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
     private ArrayList<String> email = new ArrayList<>();
     private ArrayList<Integer> pNum = new ArrayList<>();
 
-    private DatabaseManager databaseManager;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
     private Button message, call;
     private TextView docName;
 
-    PopupWindow popupWindow = null;
-    private int clicked_doctor;
-
+    private DatabaseManager databaseManager = new DatabaseManager(AvailableDoctors.this);
+    private PopupWindow popupWindow = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +60,10 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.clicked_doctor, null);
-        TextView docName = (TextView) layout.findViewById(R.id.clicked_dr_view);
+        docName = (TextView) layout.findViewById(R.id.clicked_dr_view);
 
         popupWindow = new PopupWindow(this);
-        popupWindow.setContentView(layout);getDataDir();
+        popupWindow.setContentView(layout);
         popupWindow.setWidth(width);
         popupWindow.setHeight(height);
         popupWindow.setFocusable(true);
@@ -132,7 +130,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
     public void loadDoctors(){
         databaseManager = new DatabaseManager(AvailableDoctors.this);
 
-        names = databaseManager.getDoctorName();
+        names = databaseManager.getDoctorNames();
         email = databaseManager.getDoctorEmail();
         pNum = databaseManager.getDoctorPhoneNumber();
 
