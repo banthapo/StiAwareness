@@ -39,7 +39,6 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
         title = findViewById(R.id.doctor_title);
         fName = findViewById(R.id.first_name);
         sName = findViewById(R.id.doctor_surname);
-//        tNumber = findViewById(R.id.doctor_telephone_number);
         emailAddress = findViewById(R.id.doctor_email);
 
         register.setOnClickListener(v -> {

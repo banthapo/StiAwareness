@@ -37,17 +37,17 @@ public class AwarenessDoctor extends AppCompatActivity {
                 Intent i = new Intent(AwarenessDoctor.this, LogIn.class);
                 String spaceName = intent.getStringExtra("strName");
                 int phoneNumber = databaseManager.getPhoneNumber(spaceName);
-                boolean deletedDoc = databaseManager.deleteDoctor(phoneNumber);
-                boolean deletedMember = databaseManager.deleteMember(spaceName);
 
-                if (deletedDoc && deletedMember) {
-                    startActivity(i);
-                    notifyAll();
-                    Toast.makeText(AwarenessDoctor.this, "successfully unregistered " + spaceName, Toast.LENGTH_LONG).show();
+                    try {
+                        databaseManager.deleteDoctor(phoneNumber);
+                        databaseManager.deleteMember(spaceName);
+                        Toast.makeText(AwarenessDoctor.this, "successfully unregistered " + spaceName, Toast.LENGTH_LONG).show();
+                        startActivity(i);
+                    } catch (Exception e){
+                        Toast.makeText(AwarenessDoctor.this, "failed to unregister", Toast.LENGTH_LONG).show();
+                    }
 
-                } else {
-                    Toast.makeText(AwarenessDoctor.this, "failed to unregister", Toast.LENGTH_LONG).show();
-                }
+
         });
 
 
