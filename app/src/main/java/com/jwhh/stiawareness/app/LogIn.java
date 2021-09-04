@@ -68,8 +68,9 @@ public class LogIn extends AppCompatActivity implements Runnable {
                         }
                     }
 
-                    Intent intent = new Intent(LogIn.this, Awareness.class);
-                    startActivity(intent);
+                    Intent i = new Intent(LogIn.this, Awareness.class);
+                    i.putExtra("spaceName", getName);
+                    startActivity(i);
                     Toast.makeText(LogIn.this, "Log in successful", Toast.LENGTH_LONG).show();
                 }else {
                     Toast.makeText(LogIn.this, "Log in failed", Toast.LENGTH_LONG).show();

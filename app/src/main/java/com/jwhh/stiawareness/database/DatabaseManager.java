@@ -138,12 +138,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
-    public boolean deleteMember(String name) {
+    public boolean deleteMember(int phoneNumber) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String queryString = " DELETE FROM " + MEMBER_TABLE+ " WHERE " + SPACENAME + " = ? ";
+        String queryString = " DELETE FROM " + MEMBER_TABLE+ " WHERE " + PHONE_NUMBER + " = ? ";
 
-        Cursor cursor = db.rawQuery(queryString , new String[] {String.valueOf(name)});
+        Cursor cursor = db.rawQuery(queryString , new String[] {String.valueOf(phoneNumber)});
 
         if (cursor.moveToLast()){
             return true;

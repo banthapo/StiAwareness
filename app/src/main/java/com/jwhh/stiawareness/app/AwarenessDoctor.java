@@ -40,7 +40,7 @@ public class AwarenessDoctor extends AppCompatActivity {
 
                     try {
                         databaseManager.deleteDoctor(phoneNumber);
-                        databaseManager.deleteMember(spaceName);
+                        databaseManager.deleteMember(phoneNumber);
                         Toast.makeText(AwarenessDoctor.this, "successfully unregistered " + spaceName, Toast.LENGTH_LONG).show();
                         startActivity(i);
                     } catch (Exception e){
@@ -50,12 +50,10 @@ public class AwarenessDoctor extends AppCompatActivity {
 
         });
 
-
-
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "you have: 0 messages", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
