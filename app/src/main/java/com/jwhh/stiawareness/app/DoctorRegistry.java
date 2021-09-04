@@ -44,7 +44,7 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
 
         register.setOnClickListener(v -> {
 
-            Intent intent = new Intent(DoctorRegistry.this, Awareness.class);
+            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
             DatabaseManager doctorDatabase = new DatabaseManager(DoctorRegistry.this);
 
             name = title.getText().toString()+ " " +fName.getText().toString()+ " " +sName.getText().toString();

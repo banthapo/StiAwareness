@@ -132,9 +132,28 @@ public class DatabaseManager extends SQLiteOpenHelper {
             return true;
         } else{
             cursor.close();
+            db.close();
+            return false;
+        }
+
+    }
+
+    public boolean deleteMember(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String queryString = " DELETE FROM " + MEMBER_TABLE+ " WHERE " + SPACENAME + " = ? ";
+
+        Cursor cursor = db.rawQuery(queryString , new String[] {String.valueOf(name)});
+
+        if (cursor.moveToLast()){
+            return true;
+        } else{
+            cursor.close();
+            db.close();
             return false;
         }
     }
+
     public  List<String> memberDoctors(){
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> returnMemberDoctors = new ArrayList<>();
@@ -159,12 +178,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public int getPhoneNumber(String name) {
         int phoneNumber;
 
-        String queryString = "SELECT " + DOCTOR_PHONE_NUMBER + " FROM " + MEMBER_TABLE + " WHERE " +
+        String queryString = "SELECT " + PHONE_NUMBER + " FROM " + MEMBER_TABLE + " WHERE " +
                 SPACENAME + " = ? ";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(queryString, new String[]{name});
+        Cursor cursor = db. rawQuery(queryString, new String[]{name});
 
         cursor.moveToFirst();
         int number = cursor.getInt(0);
@@ -305,8 +324,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public boolean checkSpaceName(String spaceName) {
         SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = " SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ?";
 
-        Cursor cursor = db.rawQuery(" SELECT * FROM MEMBER_TABLE WHERE SPACENAME = ?", new String[]{spaceName});
+        Cursor cursor = db.rawQuery(queryString, new String[]{spaceName});
 
         if (cursor.getCount() > 0) {
             return false;
@@ -318,9 +338,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public boolean checkLogDetails(String spaceName, String password){
         SQLiteDatabase db = this.getReadableDatabase();
+        String queryString =" SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ? AND " +
+                PASSWORD + " = ? ";
 
-        Cursor cursor = db.rawQuery(" SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ? AND " +
-                PASSWORD + " = ? ", new String[] {spaceName, password});
+        Cursor cursor = db.rawQuery(queryString, new String[] {spaceName, password});
 
         if (cursor.getCount() > 0){
             return true;

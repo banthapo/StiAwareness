@@ -55,26 +55,29 @@ public class LogIn extends AppCompatActivity implements Runnable {
             boolean checkLogin = databaseManager.checkLogDetails(getName, getPassword);
             ArrayList<String> doctorName = (ArrayList<String>) databaseManager.memberDoctors();
 
-            if (checkLogin == true){
+            try {
+                if (checkLogin) {
+                    for (int i = 0; doctorName.size() > i; i++) {
+                        String docName = doctorName.get(i);
+                        Intent intent;
+                        if (docName.equals(getName)) {
+                            intent = new Intent(LogIn.this, AwarenessDoctor.class);
+                            intent.putExtra("strName", getName);
+                            startActivity(intent);
+                            return;
+                        }
+                    }
 
-            for (int i = 0; doctorName.size() > i; i++){
-                String docName = doctorName.get(i);
-                Intent intent;
-                if (docName.equals(getName)){
-                    intent = new Intent(LogIn.this, AwarenessDoctor.class);
-                    intent.putExtra("strName", getName);
-
-                } else {
-                    intent = new Intent(LogIn.this, Awareness.class);
-
+                    Intent intent = new Intent(LogIn.this, Awareness.class);
+                    startActivity(intent);
+                    Toast.makeText(LogIn.this, "Log in successful", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(LogIn.this, "Log in failed", Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(LogIn.this, "Log in successful" , Toast.LENGTH_LONG).show();
-                startActivity(intent);
-            }
-            }else {
-                Toast.makeText(LogIn.this, "Log in failed", Toast.LENGTH_LONG).show();
-            }
+            } catch (Exception e){
+                Toast.makeText(LogIn.this, "failed", Toast.LENGTH_LONG).show();
 
+            }
 
         });
     }

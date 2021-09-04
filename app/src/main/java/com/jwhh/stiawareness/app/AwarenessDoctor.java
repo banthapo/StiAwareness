@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.jwhh.stiawareness.R;
+import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivityAwarenessDoctorBinding;
 
 public class AwarenessDoctor extends AppCompatActivity {
 
     private ActivityAwarenessDoctorBinding binding;
     private Button unregister, update;
+    private DatabaseManager databaseManager = new DatabaseManager(AwarenessDoctor.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +32,22 @@ public class AwarenessDoctor extends AppCompatActivity {
         update = findViewById(R.id.update_doctor);
 
         unregister.setOnClickListener(v -> {
-            Intent intent = getIntent();
-            String spaceName = intent.getStringExtra("strName");
-            Toast.makeText(AwarenessDoctor.this, spaceName , Toast.LENGTH_LONG).show();
+
+                Intent intent = getIntent();
+                Intent i = new Intent(AwarenessDoctor.this, LogIn.class);
+                String spaceName = intent.getStringExtra("strName");
+                int phoneNumber = databaseManager.getPhoneNumber(spaceName);
+                boolean deletedDoc = databaseManager.deleteDoctor(phoneNumber);
+                boolean deletedMember = databaseManager.deleteMember(spaceName);
+
+                if (deletedDoc && deletedMember) {
+                    startActivity(i);
+                    notifyAll();
+                    Toast.makeText(AwarenessDoctor.this, "successfully unregistered " + spaceName, Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(AwarenessDoctor.this, "failed to unregister", Toast.LENGTH_LONG).show();
+                }
         });
 
 
