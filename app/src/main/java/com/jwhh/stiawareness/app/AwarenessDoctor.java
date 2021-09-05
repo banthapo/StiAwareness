@@ -113,11 +113,11 @@ public class AwarenessDoctor extends AppCompatActivity {
           phoneNumber = databaseManager.getPhoneNumber(spaceName);
 
           try {
-              String docName = docTitle + " " + docFirstname + " " + docSurname;
-              databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, phoneNumber, docName);
+              String doctor = docTitle + " " + docFirstname + " " + docSurname;
+              databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, phoneNumber, doctor);
               String name = databaseManager.getDoctorName(phoneNumber);
 
-              Toast.makeText(AwarenessDoctor.this, name, Toast.LENGTH_LONG).show();
+              Toast.makeText(AwarenessDoctor.this," Successfully updated your details" + name, Toast.LENGTH_LONG).show();
           } catch (Exception e){
               Toast.makeText(AwarenessDoctor.this, "update failed!", Toast.LENGTH_LONG).show();
           }
