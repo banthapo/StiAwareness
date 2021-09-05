@@ -31,6 +31,8 @@ public class SignUp extends AppCompatActivity implements Runnable{
     private Button doctorSignUp;
     private Button memberSignUp;
 
+    DatabaseManager memberDatabase = new DatabaseManager(SignUp.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,30 +76,31 @@ public class SignUp extends AppCompatActivity implements Runnable{
 
     //getting member values from form into a model to save in database
     private boolean memberSignIn() {
-        DatabaseManager memberDatabase = new DatabaseManager(SignUp.this);
 
         try {
             memberModel = new MemberModel(spaceName.getText().toString(), Integer.parseInt(phoneNumber.getText().toString())
                     , password.getText().toString());
 
             successCases (memberDatabase, memberModel);
-
+            return  success;
         }catch (Exception e){
             Toast.makeText(SignUp.this, "please fill all fields ", Toast.LENGTH_LONG).show();
             memberModel = new MemberModel(null, 0, null);
-
+            return success;
         }
-        return  success;
+
     }
 
     //checking validity of information collected on member signup form
     private void successCases(DatabaseManager database, MemberModel memberModel) {
 
         String getSpaceName = spaceName.getText().toString();
+        int phoneNum = Integer.parseInt(phoneNumber.getText().toString());
         String getPassword = password.getText().toString();
         String getPasswordConfirm = confirmPassword.getText().toString();
 
         boolean spaceNameLength = spaceName.length() < 10;
+        boolean sNameLength = spaceName.length() > 0;
         boolean phoneNumberLength = phoneNumber.length()  < 3;
         boolean passwordLength = password.length() < 3 ;
         boolean checkPassword = getPassword.equals(getPasswordConfirm);
@@ -111,10 +114,10 @@ public class SignUp extends AppCompatActivity implements Runnable{
             return;
         }
 
-        if (spaceNameLength) {
+        if (spaceNameLength && sNameLength) {
             success = true;
         } else {
-            Toast.makeText(SignUp.this, "name too long, try again", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignUp.this, "invalid spacename", Toast.LENGTH_LONG).show();
             return;
         }
 

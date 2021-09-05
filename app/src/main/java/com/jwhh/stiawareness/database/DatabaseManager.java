@@ -306,6 +306,23 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnPhoneNumber;
     }
 
+    //checking phoneNumber validity
+    public boolean checkPhoneNumber(int phoneNumber){
+        db = this.getReadableDatabase();
+
+        queryString = " SELECT * FROM " + DOCTOR_TABLE+ " WHERE " + DOCTOR_PHONE_NUMBER + " = ?";
+
+        String phoneNum = String.valueOf(phoneNumber);
+
+        Cursor cursor = db.rawQuery(queryString, new String[]{phoneNum});
+
+        if (cursor.getCount() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     //checking email validity
     public boolean checkDoctorEmail(String email){
         db = this.getReadableDatabase();

@@ -2,7 +2,7 @@ package com.jwhh.stiawareness;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +12,9 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
+
         assertEquals(4, 2 + 2);
+        assertEquals(18, 9*2);
     }
+
 }

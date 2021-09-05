@@ -24,6 +24,8 @@ public class LogIn extends AppCompatActivity implements Runnable {
     private TextView signUp;
     private EditText spaceName, password;
     private final DatabaseManager databaseManager = new DatabaseManager(LogIn.this);
+    private String getName;
+    private String getPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,8 @@ public class LogIn extends AppCompatActivity implements Runnable {
             spaceName = findViewById(R.id.login_name);
             password = findViewById(R.id.login_password);
 
-            String getName = spaceName.getText().toString();
-            String getPassword = password.getText().toString();
+            getName = spaceName.getText().toString();
+            getPassword = password.getText().toString();
 
             boolean checkLogin = databaseManager.checkLogDetails(getName, getPassword);
             ArrayList<String> doctorName = (ArrayList<String>) databaseManager.memberDoctors();
@@ -96,7 +98,6 @@ public class LogIn extends AppCompatActivity implements Runnable {
 
         logIn = findViewById(R.id.login_button);
         signUp = findViewById(R.id.sign_up_text);
-
 
         logIn();
 

@@ -18,18 +18,21 @@ import com.google.android.material.snackbar.Snackbar;
 import com.jwhh.stiawareness.R;
 import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivityAwarenessDoctorBinding;
+import com.jwhh.stiawareness.models.DoctorModel;
 
 public class AwarenessDoctor extends AppCompatActivity {
 
     //declaring field variables
     private ActivityAwarenessDoctorBinding binding;
-    private Button unregister, update, updateDoctor;
-    private int phoneNumber, docPhoneNumber;
+    private Button unregister, update, updateDoctor, cancelUpdate;
+    private int phoneNumber;
     private Intent intent;
-    private String spaceName, doctorName, docTitle, docFirstname, docSurname, docEmail;
+    private String spaceName, doctorName, docTitle, docFirstname, docSurname, docEmail, docPhoneNumber;
     private EditText title, firstName, surname, email, phoneNum;
     private PopupWindow popupWindow = null;
     private DisplayMetrics displayMetrics ;
+    private DoctorModel doctorModel;
+    private boolean success;
 
     private DatabaseManager databaseManager = new DatabaseManager(AwarenessDoctor.this);
     private LayoutInflater inflater;
@@ -96,6 +99,7 @@ public class AwarenessDoctor extends AppCompatActivity {
         View layout = inflater.inflate(R.layout.update_layout, null);
 
         updateDoctor = (Button) layout.findViewById(R.id.update_button);
+        cancelUpdate = (Button) layout.findViewById(R.id.cancel_update);
         title = (EditText) layout.findViewById(R.id.update_title);
         firstName = (EditText) layout.findViewById(R.id.update_firstname);
         surname = (EditText) layout.findViewById(R.id.update_surname);
@@ -113,28 +117,27 @@ public class AwarenessDoctor extends AppCompatActivity {
 
         updateDoctorDetails();
 
+        cancelUpdate.setOnClickListener(v ->{
+            popupWindow.dismiss();
+        });
+
     }
 
     //doing doctor detail update
     private void updateDoctorDetails() {
         updateDoctor.setOnClickListener(v -> {
+
             docTitle = title.getText().toString();
             docFirstname = firstName.getText().toString();
             docSurname = surname.getText().toString();
             docEmail = email.getText().toString();
-            docPhoneNumber = Integer.parseInt(phoneNum.getText().toString());
+            docPhoneNumber = phoneNum.getText().toString();
 
             phoneNumber = databaseManager.getPhoneNumber(spaceName);
-            String name = databaseManager.getDoctorName(phoneNumber);
-
             try {
-                String doctor = docTitle + " " + docFirstname + " " + docSurname;
-                databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, doctor, phoneNumber, docPhoneNumber);
-                databaseManager.setMemberPhoneNumber(phoneNumber, docPhoneNumber);
+                successCases(databaseManager, doctorModel);
+                return;
 
-
-                Toast.makeText(AwarenessDoctor.this," Successfully updated details from: " + name + "\nto: " +
-                        doctor, Toast.LENGTH_LONG).show();
             } catch (Exception e){
                 Toast.makeText(AwarenessDoctor.this, "update failed!", Toast.LENGTH_LONG).show();
             }
@@ -142,4 +145,82 @@ public class AwarenessDoctor extends AppCompatActivity {
 
         });
     }
+    private void successCases(DatabaseManager database, DoctorModel doctorModel) {
+
+        String getTitle = title.getText().toString();
+        String getFirstname = firstName.getText().toString();
+        String getSurname = surname.getText().toString();
+        String getEmail = email.getText().toString();
+        String getPhoneNumber = phoneNum.getText().toString();
+
+        boolean titleLength = title.length() < 6;
+        boolean firstNameLength = firstName.length() < 20;
+        boolean surnameLength = surname.length() < 20;
+        boolean phoneNumberLength = phoneNum.length() < 3;
+        boolean checkEmailValidity = getEmail.contains("@");
+        boolean checkEmail = database.checkDoctorEmail(getEmail);
+
+        String name = databaseManager.getDoctorName(phoneNumber);
+
+        if (titleLength && !getTitle.isEmpty()) {
+            success = true;
+        } else {
+            Toast.makeText(AwarenessDoctor.this, "Please enter a valid title!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (firstNameLength && !getFirstname.isEmpty()) {
+            success = true;
+        } else {
+            Toast.makeText(AwarenessDoctor.this, "Please enter a valid name!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (surnameLength && !getSurname.isEmpty()) {
+            success = true;
+        } else {
+            Toast.makeText(AwarenessDoctor.this, "Please enter a valid surname!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (checkEmailValidity) {
+            success = true;
+        } else {
+            Toast.makeText(AwarenessDoctor.this, "Please enter a valid email", Toast.LENGTH_LONG).show();
+            success = false;
+            return;
+        }
+        if (checkEmail) {
+            success = true;
+        } else {
+            Toast.makeText(AwarenessDoctor.this, "Email Address already in use", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!phoneNumberLength && !getPhoneNumber.isEmpty()) {
+            success = true;
+            boolean checkPhoneNumber = database.checkPhoneNumber(Integer.parseInt(getPhoneNumber));
+
+            if (checkPhoneNumber) {
+                success = true;
+            } else {
+                Toast.makeText(AwarenessDoctor.this, "Phone number already in use", Toast.LENGTH_LONG).show();
+                return;
+            }
+        } else {
+            Toast.makeText(AwarenessDoctor.this, "Please enter a valid phone number!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (success) {
+                String doctor = docTitle + " " + docFirstname + " " + docSurname;
+                databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, doctor, phoneNumber, Integer.parseInt(docPhoneNumber));
+                databaseManager.setMemberPhoneNumber(phoneNumber, Integer.parseInt(docPhoneNumber));
+
+                Toast.makeText(AwarenessDoctor.this, " Successfully updated details from: " + name + "\nto: " +
+                        doctor, Toast.LENGTH_LONG).show();
+                popupWindow.dismiss();
+        }
+    }
+
 }
