@@ -21,6 +21,7 @@ import com.jwhh.stiawareness.databinding.ActivityAwarenessDoctorBinding;
 
 public class AwarenessDoctor extends AppCompatActivity {
 
+    //declaring field variables
     private ActivityAwarenessDoctorBinding binding;
     private Button unregister, update, updateDoctor;
     private int phoneNumber, docPhoneNumber;
@@ -52,10 +53,21 @@ public class AwarenessDoctor extends AppCompatActivity {
         phoneNumber = databaseManager.getPhoneNumber(spaceName);
         doctorName = databaseManager.getDoctorName(phoneNumber);
 
+        //setting the update button onClick action
         update.setOnClickListener(v -> {
             showPopup();
         });
 
+        unregisterDoctor();
+
+        binding.fab.setOnClickListener(view ->
+                Snackbar.make(view, "you have: 0 messages", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
+
+    }
+
+    //deleting doctor account
+    private void unregisterDoctor() {
         unregister.setOnClickListener(v -> {
             intent = new Intent(AwarenessDoctor.this, LogIn.class);
 
@@ -70,13 +82,9 @@ public class AwarenessDoctor extends AppCompatActivity {
 
 
         });
-
-        binding.fab.setOnClickListener(view ->
-                Snackbar.make(view, "you have: 0 messages", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
-
     }
 
+    //implementing a popup view for doctor update
     private void showPopup() {
         displayMetrics = getResources().getDisplayMetrics();
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -103,31 +111,35 @@ public class AwarenessDoctor extends AppCompatActivity {
         popupWindow.setBackgroundDrawable(null);
         popupWindow.showAtLocation(layout, Gravity.CENTER, 2, 0);
 
-      updateDoctor.setOnClickListener(v -> {
-          docTitle = title.getText().toString();
-          docFirstname = firstName.getText().toString();
-          docSurname = surname.getText().toString();
-          docEmail = email.getText().toString();
-          docPhoneNumber = Integer.parseInt(phoneNum.getText().toString());
+        updateDoctorDetails();
 
-          phoneNumber = databaseManager.getPhoneNumber(spaceName);
-          String name = databaseManager.getDoctorName(phoneNumber);
+    }
 
-//          try {
-                databaseManager.setMemberPhoneNumber(phoneNumber, docPhoneNumber);
+    //doing doctor detail update
+    private void updateDoctorDetails() {
+        updateDoctor.setOnClickListener(v -> {
+            docTitle = title.getText().toString();
+            docFirstname = firstName.getText().toString();
+            docSurname = surname.getText().toString();
+            docEmail = email.getText().toString();
+            docPhoneNumber = Integer.parseInt(phoneNum.getText().toString());
+
+            phoneNumber = databaseManager.getPhoneNumber(spaceName);
+            String name = databaseManager.getDoctorName(phoneNumber);
+
+            try {
                 String doctor = docTitle + " " + docFirstname + " " + docSurname;
                 databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, doctor, phoneNumber, docPhoneNumber);
+                databaseManager.setMemberPhoneNumber(phoneNumber, docPhoneNumber);
 
 
-              Toast.makeText(AwarenessDoctor.this," Successfully updated your details" + phoneNumber + " " +
-                      name, Toast.LENGTH_LONG).show();
-//          } catch (Exception e){
-//              Toast.makeText(AwarenessDoctor.this, "update failed!", Toast.LENGTH_LONG).show();
-//          }
+                Toast.makeText(AwarenessDoctor.this," Successfully updated details from: " + name + "\nto: " +
+                        doctor, Toast.LENGTH_LONG).show();
+            } catch (Exception e){
+                Toast.makeText(AwarenessDoctor.this, "update failed!", Toast.LENGTH_LONG).show();
+            }
 
 
-      });
-
-        Toast.makeText(AwarenessDoctor.this, "successful" + doctorName, Toast.LENGTH_SHORT).show();
+        });
     }
 }

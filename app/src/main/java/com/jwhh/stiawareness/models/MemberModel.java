@@ -1,10 +1,12 @@
 package com.jwhh.stiawareness.models;
 
 public class MemberModel {
+    //declaring field variables
     private String spaceName;
     private int phoneNumber;
     private String password;
 
+    //setting up a constructor for member model
     public MemberModel(String spaceName, int phoneNumber, String password) {
         this.spaceName = spaceName;
         this.phoneNumber = phoneNumber;
@@ -12,6 +14,7 @@ public class MemberModel {
 
     }
 
+    //setting up String values for member model
     @Override
     public String toString() {
         return "MemberModel{" +
@@ -21,6 +24,7 @@ public class MemberModel {
                 '}';
     }
 
+    //setting getters and setters
     public String getSpaceName() {
         return spaceName;
     }

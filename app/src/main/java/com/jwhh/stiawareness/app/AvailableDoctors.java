@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class AvailableDoctors extends AppCompatActivity implements RecyclerViewAdapter.OnDoctorClickListener, Runnable {
     private ActivityAvailableDoctorsBinding binding;
 
+    //declaring field variables
     private SearchView doctorSearchView;
     private ImageView backButton;
 
@@ -47,10 +48,12 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //running the class objects on a thread
         run();
 
     }
 
+    //creating a popup view for available doctor onClick listener
     public void showPopup(int position){
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
@@ -75,15 +78,15 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
         docName.setText(name);
 
         Toast.makeText(AvailableDoctors.this, "Deleted:  " +  name, Toast.LENGTH_SHORT).show();
-//        doctorName.setText(names.get(position));
     }
 
+    //setting the Recyclerview onClick listener action
     @Override
     public void onDoctorClick(int position){
         showPopup(position);
-//        deleteDoctor(position);
     }
 
+    //function for removing doctor from recyclerView and database
     private void deleteDoctor(int position) {
 
         String name = names.get(position);
@@ -99,6 +102,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
 
     }
 
+    //searching doctor in the recyclerView
     public void searchDoctor() {
         doctorSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -122,11 +126,13 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
                 return true;
             }
 
+            //onClick listener initializer for doctor in recyclerView
             private void onDoctorClick(int pos) {
             }
         });
     }
 
+    //getting doctor list values from database and loading into array lists and into recyclerview
     public void loadDoctors(){
         databaseManager = new DatabaseManager(AvailableDoctors.this);
 
@@ -137,6 +143,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
         recyclerview();
     }
 
+    //setting up the the adapter for recyclerview
     private  void recyclerview(){
         adapter = new RecyclerViewAdapter(names, email, pNum, this::onDoctorClick);
         recyclerView.setAdapter(adapter);
@@ -144,6 +151,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
 
     }
 
+    //implementing runnable
     public void run() {
 
         binding = ActivityAvailableDoctorsBinding.inflate(getLayoutInflater());
@@ -164,6 +172,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
         loadDoctors();
     }
 
+    //getting size of array list pNum
     public int getItemCount() {
         return pNum.size();
     }

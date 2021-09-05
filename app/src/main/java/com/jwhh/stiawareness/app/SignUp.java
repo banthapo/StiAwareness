@@ -15,10 +15,9 @@ import com.jwhh.stiawareness.databinding.ActivitySignUpBinding;
 import com.jwhh.stiawareness.models.MemberModel;
 
 public class SignUp extends AppCompatActivity implements Runnable{
-
-
     private ActivitySignUpBinding binding;
 
+    //declaring field variables
     private MemberModel memberModel;
 
     private EditText spaceName;
@@ -36,10 +35,11 @@ public class SignUp extends AppCompatActivity implements Runnable{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //running class objects on a thread
         run();
-
     }
 
+    //setting up onClick action for return icon
     private void backButton() {
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(SignUp.this, LogIn.class);
@@ -48,6 +48,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         });
     }
 
+    //setting up onClick action for member signup button
     private void memberSignUp() {
         memberSignUp.setOnClickListener(v -> {
             Intent memberIntent = new Intent(SignUp.this, LogIn.class);
@@ -60,6 +61,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         });
     }
 
+    //setting up onClick action for doctor signup button
     private void doctorSignUp() {
         doctorSignUp.setOnClickListener(v -> {
             if (memberSignIn()){
@@ -70,6 +72,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         });
     }
 
+    //getting member values from form into a model to save in database
     private boolean memberSignIn() {
         DatabaseManager memberDatabase = new DatabaseManager(SignUp.this);
 
@@ -87,6 +90,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         return  success;
     }
 
+    //checking validity of information collected on member signup form
     private void successCases(DatabaseManager database, MemberModel memberModel) {
 
         String getSpaceName = spaceName.getText().toString();
@@ -142,6 +146,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         }
     }
 
+    //implementing runnable
     @Override
     public void run() {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
@@ -163,6 +168,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
         backButton();
     }
 
+    //getting phone number from a sign up form
     public static int getPhoneNumber(){
         return pNumber;
     }

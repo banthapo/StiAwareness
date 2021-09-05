@@ -18,6 +18,7 @@ import java.util.Collection;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements View.OnClickListener , Filterable {
 
+    //declaring field variables
     private ArrayList<String> names;
     private ArrayList<String> email;
     private ArrayList<Integer> pNum;
@@ -26,6 +27,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     private ArrayList<String> allDoctors;
     AvailableDoctors doctors = new AvailableDoctors();
 
+    //setting up the constructor
     public RecyclerViewAdapter(ArrayList<String> names, ArrayList<String> email, ArrayList<Integer> pNum, OnDoctorClickListener onDoctorClickListener) {
         this.names = names;
         this.email = email;
@@ -34,16 +36,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         this.onDoctorClickListener = onDoctorClickListener;
     }
 
+    //onClick view listener
     @Override
     public void onClick(View v) {
 
     }
 
+    //getting filter for recyclerview search
     @Override
     public Filter getFilter() {
         return filter;
     }
 
+    //setting up the filter for searching doctor
     Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -69,6 +74,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
             return filterResults;
         }
 
+        //publishing filtered doctors
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             names.clear();
@@ -81,10 +87,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         }
     };
 
+    //creating an interface for onClick listener in recyclerview
     public interface OnDoctorClickListener {
         void onDoctorClick(int position);
     }
 
+    //inflating layout on creating viewHolder
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -94,6 +102,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         return doctorHolder;
     }
 
+    //setting values for viewHolder
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(RecyclerViewHolder doctorHolder, int position) {
@@ -104,6 +113,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
 
     }
 
+    //getting the size of name list
     @Override
     public int getItemCount() {
         return names.size();

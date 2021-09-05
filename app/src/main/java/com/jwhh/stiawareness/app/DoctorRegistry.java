@@ -13,17 +13,15 @@ import com.jwhh.stiawareness.R;
 import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivityDoctorRegistryBinding;
 import com.jwhh.stiawareness.models.DoctorModel;
-import com.jwhh.stiawareness.models.MemberModel;
 
 public class DoctorRegistry extends AppCompatActivity implements Runnable{
-
     private ActivityDoctorRegistryBinding binding;
 
+    //declaring field variables
     private EditText title, fName, sName, emailAddress;
     private int tNumber;
     private String name;
     private DoctorModel doctorModel;
-    private MemberModel memberModel;
 
     private ImageView backButton;
     private Button register;
@@ -32,15 +30,22 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       run();
+        //running class objects on a thread
+        run();
     }
 
+    //getting values for doctor registration
     private void doctorRegistration(Button register) {
         title = findViewById(R.id.doctor_title);
         fName = findViewById(R.id.first_name);
         sName = findViewById(R.id.doctor_surname);
         emailAddress = findViewById(R.id.doctor_email);
 
+        registerDoctor(register);
+    }
+
+    //registering doctor using doctor model
+    private void registerDoctor(Button register) {
         register.setOnClickListener(v -> {
 
             Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
@@ -72,6 +77,15 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
         });
     }
 
+    //setting onClick action to return icon
+    private void returnButton() {
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
+            startActivity(intent);
+        });
+    }
+
+    //implementing runnable
     @Override
     public void run() {
         binding = ActivityDoctorRegistryBinding.inflate(getLayoutInflater());
@@ -82,9 +96,7 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
 
         doctorRegistration(register);
 
-        backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
-            startActivity(intent);
-        });
+        returnButton();
     }
+
 }

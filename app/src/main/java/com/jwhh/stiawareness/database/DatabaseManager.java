@@ -308,6 +308,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnPhoneNumber;
     }
 
+    //checking the validity of space name
     public boolean checkSpaceName(String spaceName) {
         db = this.getReadableDatabase();
 
@@ -323,6 +324,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
+    //checking log details for authentication
     public boolean checkLogDetails(String spaceName, String password){
         db = this.getReadableDatabase();
 

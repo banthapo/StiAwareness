@@ -1,6 +1,8 @@
 package com.jwhh.stiawareness.models;
 
 public class DoctorModel {
+
+    //declaring field variables
     private String title, firstName, surname, emailAddress,name;
     private int phoneNumber;
 
@@ -13,6 +15,7 @@ public class DoctorModel {
         this.name = name;
     }
 
+    //setting up String values for the doctor model
     @Override
     public String toString() {
         return "DoctorModel{" +
@@ -24,6 +27,7 @@ public class DoctorModel {
                 '}';
     }
 
+    //setting getters and setters
     public String getTitle() {
         return title;
     }

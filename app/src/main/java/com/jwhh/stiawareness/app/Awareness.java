@@ -14,8 +14,9 @@ import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivityAwarenessBinding;
 
 public class Awareness extends AppCompatActivity implements Runnable{
-
     private ActivityAwarenessBinding binding;
+
+    //declaring field variables
     private ImageView backButton;
     private Button counsellingButton;
     private TextView deleteAccount;
@@ -27,10 +28,11 @@ public class Awareness extends AppCompatActivity implements Runnable{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //running class objects on a thread
         run();
     }
 
-
+    //implementing runnable
     @Override
     public void run() {
         binding = ActivityAwarenessBinding.inflate(getLayoutInflater());
@@ -40,25 +42,40 @@ public class Awareness extends AppCompatActivity implements Runnable{
         backButton = findViewById(R.id.from_awareness);
         deleteAccount = findViewById(R.id.delete_account);
 
+        counsellingButtonFunc();
+
+        deleteMemberAccount();
+
+        returnButtonFunc();
+    }
+
+    //setting action for onClick listener to counselling button
+    private void counsellingButtonFunc() {
         counsellingButton.setOnClickListener(v -> {
             intent = new Intent(Awareness.this, AvailableDoctors.class);
 
             startActivity(intent);
         });
+    }
 
+    //setting action for onClick listener to return icon
+    private void returnButtonFunc() {
+        backButton.setOnClickListener(v -> {
+            intent = new Intent(Awareness.this, LogIn.class);
+            startActivity(intent);
+        });
+    }
+
+    //removing account from database using phone number and spacename and intent extra
+    private void deleteMemberAccount() {
         deleteAccount.setOnClickListener(v -> {
             intent= getIntent();
             String spaceName = intent.getStringExtra("spaceName");
             intent = new Intent(Awareness.this, LogIn.class);
 
-            int phoneNUmber = databaseManager.getPhoneNumber(spaceName);
-            databaseManager.deleteMember(phoneNUmber);
+            int phoneNumber = databaseManager.getPhoneNumber(spaceName);
+            databaseManager.deleteMember(phoneNumber);
             Toast.makeText(Awareness.this, "successfully unregistered " + spaceName , Toast.LENGTH_LONG).show();
-            startActivity(intent);
-        });
-
-        backButton.setOnClickListener(v -> {
-            intent = new Intent(Awareness.this, LogIn.class);
             startActivity(intent);
         });
     }
