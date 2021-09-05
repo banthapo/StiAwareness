@@ -16,6 +16,7 @@ import java.util.List;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
+    //declaring global values
     public static final String DOCTOR_TABLE = "DOCTOR_TABLE";
     public static final String DOCTOR_TITLE = "DOCTOR_TITLE";
     public static final String DOCTOR_FIRST_NAME = "DOCTOR_FIRST_NAME";
@@ -29,13 +30,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public static final String PASSWORD = "PASSWORD";
     public static final String DOCTOR_NAME = "DOCTOR_NAME";
     private String queryString;
+    private SQLiteDatabase db;
 
+    // ends here
 
+    //creating constructor for database objects
     public DatabaseManager(@Nullable Context context ) {
         super(context, "member_doctor.db", null, 1);
 
     }
 
+    //creating tables in database
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -56,6 +61,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
+    //creating options on database upgrade
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + MEMBER_TABLE);
@@ -64,6 +70,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //adding values in database in doctor table using doctor model and ContentValues
     public boolean addDoctor(DoctorModel doctorModel){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -81,8 +88,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
+    //adding values in database in members table using member model and ContentValues
     public boolean addMember(MemberModel memberModel){
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(SPACENAME, memberModel.getSpaceName());
@@ -94,14 +102,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return insert != -1;
 
     }
-    public boolean updateDoctor(String title, String fName, String surname, String email, int phoneNum, String name){
-        SQLiteDatabase db = this.getWritableDatabase();
+
+    //updating values in doctor table
+    public boolean updateDoctor(String title, String fName, String surname, String email,  String name, int phoneNum, int phoneNumber){
+        db = this.getWritableDatabase();
 
         queryString = " UPDATE " + DOCTOR_TABLE + " SET " + DOCTOR_TITLE + " = ? , " + DOCTOR_FIRST_NAME + " = ? , " + DOCTOR_SURNAME + " = ? , " +
-        DOCTOR_EMAIL_ADDRESS + " = ?, " + DOCTOR_NAME +" = ? " + " WHERE " + DOCTOR_PHONE_NUMBER + " = " + phoneNum;
+        DOCTOR_EMAIL_ADDRESS + " = ?, " + DOCTOR_NAME +" = ?, "+ DOCTOR_PHONE_NUMBER + " = ? " + " WHERE " + DOCTOR_PHONE_NUMBER + " = " + phoneNum;
 
-        String phoneNumber = String.valueOf(phoneNum);
-        Cursor cursor = db.rawQuery(queryString, new String[] {title, fName, surname, email, name});
+
+
+        String docNum = String.valueOf(phoneNumber);
+        Cursor cursor = db.rawQuery(queryString, new String[] {title, fName, surname, email, name, docNum});
 
         if(cursor.moveToFirst()){
             return true;
@@ -110,14 +122,32 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
+    //changing phone number in member table to sych when updating doctor values being the joining part for the tables
+    public boolean setMemberPhoneNumber(int oldNumber, int newNumber){
+        db = this.getWritableDatabase();
+
+        queryString = " UPDATE " + MEMBER_TABLE + " SET " + PHONE_NUMBER + " = ? " + " WHERE " + PHONE_NUMBER + " = " + oldNumber;
+
+        Cursor cursor = db.rawQuery(queryString, new String[] {String.valueOf(newNumber)});
+
+        if (cursor.moveToFirst()){
+            return true;
+        } else{
+            cursor.close();
+            db.close();
+            return false;
+        }
+    }
+
+    //removing doctor form doctor table
     public boolean deleteDoctor(int pNumber) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
 
         queryString = " DELETE FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
 
         Cursor cursor = db.rawQuery(queryString, new String[] {String.valueOf(pNumber)});
 
-        if (cursor.moveToLast()){
+        if (cursor.moveToFirst()){
             return true;
         } else{
             cursor.close();
@@ -127,8 +157,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     }
 
+    //removing member from member table
     public boolean deleteMember(int phoneNumber) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        db = this.getWritableDatabase();
 
         queryString = " DELETE FROM " + MEMBER_TABLE+ " WHERE " + PHONE_NUMBER + " = ? ";
 
@@ -143,8 +174,48 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
-    public  List<String> memberDoctors(){
-        SQLiteDatabase db = this.getReadableDatabase();
+    //getting phone number of member using spacename
+    public int getPhoneNumber(String name) {
+        db = this.getReadableDatabase();
+        int phoneNumber;
+
+        queryString = "SELECT " + PHONE_NUMBER + " FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ? ";
+
+        Cursor cursor = db. rawQuery(queryString, new String[]{name});
+
+        cursor.moveToFirst();
+        int number = cursor.getInt(0);
+        phoneNumber = number;
+
+        cursor.close();
+        db.close();
+
+        return phoneNumber;
+
+    }
+
+
+    //getting the name of doctor using phone number in doctor table
+    public String getDoctorName(int number){
+        db = this.getReadableDatabase();
+        String doctorName;
+
+        queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
+
+        Cursor cursor = db.rawQuery(queryString, new String[] {String.valueOf(number)});
+
+        cursor.moveToFirst();
+            doctorName = cursor.getString(0);
+
+            cursor.close();
+            db.close();
+
+        return doctorName;
+    }
+
+    //getting a spacename list of doctors in database
+    public List<String> memberDoctors(){
+        db = this.getReadableDatabase();
         List<String> returnMemberDoctors = new ArrayList<>();
 
         queryString = " SELECT " + SPACENAME + " FROM " + MEMBER_TABLE + ", " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = " + PHONE_NUMBER;
@@ -164,29 +235,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnMemberDoctors;
     }
 
-    public int getPhoneNumber(String name) {
-        int phoneNumber;
-
-        queryString = "SELECT " + PHONE_NUMBER + " FROM " + MEMBER_TABLE + " WHERE " +
-                SPACENAME + " = ? ";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db. rawQuery(queryString, new String[]{name});
-
-        cursor.moveToFirst();
-        int number = cursor.getInt(0);
-        phoneNumber = number;
-
-        cursor.close();
-        db.close();
-
-        return phoneNumber;
-
-    }
-
+    //getting list of doctor names in doctor table
     public ArrayList<String> getDoctorNames() {
-        SQLiteDatabase db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
         ArrayList<String> returnDoctors = new ArrayList<>();
 
         queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE;
@@ -208,26 +259,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnDoctors;
     }
 
-    public String getDoctorName(int number){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String doctorName;
-
-        queryString = "SELECT " + DOCTOR_NAME + " FROM " + DOCTOR_TABLE + " WHERE " + DOCTOR_PHONE_NUMBER + " = ? ";
-
-        Cursor cursor = db.rawQuery(queryString, new String[] {String.valueOf(number)});
-
-        cursor.moveToFirst();
-            doctorName = cursor.getString(0);
-
-            cursor.close();
-            db.close();
-
-        return doctorName;
-    }
-
-
+    //getting list of doctor emails
     public ArrayList<String> getDoctorEmail(){
-        SQLiteDatabase db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
         ArrayList<String> returnEmailAddresses = new ArrayList<>();
 
         queryString = "SELECT " + DOCTOR_EMAIL_ADDRESS + " FROM " + DOCTOR_TABLE;
@@ -249,8 +283,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return returnEmailAddresses;
     }
 
+    //getting list of phone numbers for doctors
     public ArrayList<Integer> getDoctorPhoneNumber(){
-        SQLiteDatabase db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
         ArrayList<Integer> returnPhoneNumber = new ArrayList<>();
 
         queryString = "SELECT " + DOCTOR_PHONE_NUMBER+ " FROM " + DOCTOR_TABLE;
@@ -274,7 +309,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public boolean checkSpaceName(String spaceName) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
 
         queryString = " SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ?";
 
@@ -289,7 +324,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     public boolean checkLogDetails(String spaceName, String password){
-        SQLiteDatabase db = this.getReadableDatabase();
+        db = this.getReadableDatabase();
 
         queryString =" SELECT * FROM " + MEMBER_TABLE + " WHERE " + SPACENAME + " = ? AND " +
                 PASSWORD + " = ? ";

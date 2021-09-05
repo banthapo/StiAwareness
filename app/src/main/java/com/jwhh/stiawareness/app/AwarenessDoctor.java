@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +23,10 @@ public class AwarenessDoctor extends AppCompatActivity {
 
     private ActivityAwarenessDoctorBinding binding;
     private Button unregister, update, updateDoctor;
-    private int phoneNumber;
+    private int phoneNumber, docPhoneNumber;
     private Intent intent;
     private String spaceName, doctorName, docTitle, docFirstname, docSurname, docEmail;
-    private TextView docName;
-    private EditText title, firstName, surname, email;
+    private EditText title, firstName, surname, email, phoneNum;
     private PopupWindow popupWindow = null;
     private DisplayMetrics displayMetrics ;
 
@@ -94,6 +92,7 @@ public class AwarenessDoctor extends AppCompatActivity {
         firstName = (EditText) layout.findViewById(R.id.update_firstname);
         surname = (EditText) layout.findViewById(R.id.update_surname);
         email = (EditText) layout.findViewById(R.id.update_email);
+        phoneNum = (EditText) layout.findViewById(R.id.update_phone_number);
 
         popupWindow = new PopupWindow();
         popupWindow.setContentView(layout);
@@ -109,18 +108,22 @@ public class AwarenessDoctor extends AppCompatActivity {
           docFirstname = firstName.getText().toString();
           docSurname = surname.getText().toString();
           docEmail = email.getText().toString();
+          docPhoneNumber = Integer.parseInt(phoneNum.getText().toString());
 
           phoneNumber = databaseManager.getPhoneNumber(spaceName);
+          String name = databaseManager.getDoctorName(phoneNumber);
 
-          try {
-              String doctor = docTitle + " " + docFirstname + " " + docSurname;
-              databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, phoneNumber, doctor);
-              String name = databaseManager.getDoctorName(phoneNumber);
+//          try {
+                databaseManager.setMemberPhoneNumber(phoneNumber, docPhoneNumber);
+                String doctor = docTitle + " " + docFirstname + " " + docSurname;
+                databaseManager.updateDoctor(docTitle, docFirstname, doctorName, docEmail, doctor, phoneNumber, docPhoneNumber);
 
-              Toast.makeText(AwarenessDoctor.this," Successfully updated your details" + name, Toast.LENGTH_LONG).show();
-          } catch (Exception e){
-              Toast.makeText(AwarenessDoctor.this, "update failed!", Toast.LENGTH_LONG).show();
-          }
+
+              Toast.makeText(AwarenessDoctor.this," Successfully updated your details" + phoneNumber + " " +
+                      name, Toast.LENGTH_LONG).show();
+//          } catch (Exception e){
+//              Toast.makeText(AwarenessDoctor.this, "update failed!", Toast.LENGTH_LONG).show();
+//          }
 
 
       });
