@@ -45,8 +45,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         try {
-            String doctorStatement = "CREATE TABLE " + DOCTOR_TABLE + " (" + DOCTOR_TITLE + " TEXT , " + DOCTOR_FIRST_NAME + " TEXT , " +
-                    DOCTOR_SURNAME + " TEXT, " + DOCTOR_PHONE_NUMBER + " INTEGER PRIMARY KEY , " + DOCTOR_EMAIL_ADDRESS + " TEXT UNIQUE , " + DOCTOR_NAME +
+            String doctorStatement = "CREATE TABLE " + DOCTOR_TABLE + " (" + DOCTOR_TITLE + " TEXT(6) , " + DOCTOR_FIRST_NAME + " TEXT(20) , " +
+                    DOCTOR_SURNAME + " TEXT(20) , " + DOCTOR_PHONE_NUMBER + " INTEGER PRIMARY KEY , " + DOCTOR_EMAIL_ADDRESS + " TEXT UNIQUE , " + DOCTOR_NAME +
                     " TEXT )";
 
             String memberStatement = "CREATE TABLE " + MEMBER_TABLE + " ( " + SPACENAME + " TEXT UNIQUE , " + PHONE_NUMBER +
@@ -104,15 +104,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
     }
 
     //updating values in doctor table
-    public boolean updateDoctor(String title, String fName, String surname, String email,  String name, int phoneNum, int phoneNumber){
+    public boolean updateDoctor(String title, String fName, String surname, String email,  String name, int oldNumber, int newNumber){
         db = this.getWritableDatabase();
 
         queryString = " UPDATE " + DOCTOR_TABLE + " SET " + DOCTOR_TITLE + " = ? , " + DOCTOR_FIRST_NAME + " = ? , " + DOCTOR_SURNAME + " = ? , " +
-        DOCTOR_EMAIL_ADDRESS + " = ?, " + DOCTOR_NAME +" = ?, "+ DOCTOR_PHONE_NUMBER + " = ? " + " WHERE " + DOCTOR_PHONE_NUMBER + " = " + phoneNum;
+        DOCTOR_EMAIL_ADDRESS + " = ?, " + DOCTOR_NAME +" = ?, "+ DOCTOR_PHONE_NUMBER + " = ? " + " WHERE " + DOCTOR_PHONE_NUMBER + " = " + oldNumber;
 
-
-
-        String docNum = String.valueOf(phoneNumber);
+        String docNum = String.valueOf(newNumber);
         Cursor cursor = db.rawQuery(queryString, new String[] {title, fName, surname, email, name, docNum});
 
         if(cursor.moveToFirst()){
@@ -306,6 +304,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
 
         return returnPhoneNumber;
+    }
+
+    //checking email validity
+    public boolean checkDoctorEmail(String email){
+        db = this.getReadableDatabase();
+
+        queryString = " SELECT * FROM " + DOCTOR_TABLE+ " WHERE " + DOCTOR_EMAIL_ADDRESS + " = ?";
+
+        Cursor cursor = db.rawQuery(queryString, new String[]{email});
+
+        if (cursor.getCount() > 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     //checking the validity of space name

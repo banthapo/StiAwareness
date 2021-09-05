@@ -18,6 +18,7 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
     private ActivityDoctorRegistryBinding binding;
 
     //declaring field variables
+    private boolean success;
     private EditText title, fName, sName, emailAddress;
     private int tNumber;
     private String name;
@@ -25,6 +26,8 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
 
     private ImageView backButton;
     private Button register;
+
+    DatabaseManager doctorDatabase = new DatabaseManager(DoctorRegistry.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,39 +47,6 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
         registerDoctor(register);
     }
 
-    //registering doctor using doctor model
-    private void registerDoctor(Button register) {
-        register.setOnClickListener(v -> {
-
-            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
-            DatabaseManager doctorDatabase = new DatabaseManager(DoctorRegistry.this);
-
-            name = title.getText().toString()+ " " +fName.getText().toString()+ " " +sName.getText().toString();
-            tNumber = SignUp.getPhoneNumber();
-
-            try {
-                doctorModel = new DoctorModel(title.getText().toString(), fName.getText().toString(), sName.getText().toString()
-                        , tNumber , emailAddress.getText().toString(), name);
-
-
-                boolean success =  doctorDatabase.addDoctor(doctorModel);
-
-                if (success) {
-                    Toast.makeText(DoctorRegistry.this, "Successfully registered", Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-                } else{
-                    Toast.makeText(DoctorRegistry.this, "Registration failed", Toast.LENGTH_LONG).show();
-                }
-
-            }catch (Exception e){
-                Toast.makeText(DoctorRegistry.this, "Fill all fields please ", Toast.LENGTH_LONG).show();
-                doctorModel = new DoctorModel(null, null, null, 0, null, null);
-            }
-
-
-        });
-    }
-
     //setting onClick action to return icon
     private void returnButton() {
         backButton.setOnClickListener(v -> {
@@ -84,6 +54,86 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
             startActivity(intent);
         });
     }
+
+    //registering doctor using doctor model
+    private boolean registerDoctor(Button register) {
+        register.setOnClickListener(v -> {
+            name = title.getText().toString()+ " " +fName.getText().toString()+ " " +sName.getText().toString();
+            tNumber = SignUp.getPhoneNumber();
+
+            try {
+                doctorModel = new DoctorModel(title.getText().toString(), fName.getText().toString(), sName.getText().toString()
+                        , tNumber , emailAddress.getText().toString(), name);
+
+                successCases(doctorDatabase, doctorModel);
+
+            }catch (Exception e){
+                Toast.makeText(DoctorRegistry.this, "Fill all fields please ", Toast.LENGTH_LONG).show();
+                doctorModel = new DoctorModel(null, null, null, 0, null, null);
+            }
+        });
+        return success;
+    }
+
+    //checking validity of information collected on member signup form
+    private void successCases(DatabaseManager database, DoctorModel doctorModel) {
+
+        String getTitle = title.getText().toString();
+        String getFirstname = fName.getText().toString();
+        String getSurname = sName.getText().toString();
+        String getEmail = emailAddress.getText().toString();
+
+        boolean titleLength = title.length() < 6;
+        boolean firstNameLength = fName.length() < 20;
+        boolean surnameLength = sName.length() < 20;
+        boolean checkEmailValidity = getEmail.contains("@");
+
+        boolean checkEmail = database.checkDoctorEmail(getEmail);
+
+        if (titleLength && !getTitle.isEmpty()) {
+            success = true;
+        } else {
+            Toast.makeText(DoctorRegistry.this, "Please enter a valid title!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (firstNameLength && !getFirstname.isEmpty()) {
+            success = true;
+        } else {
+            Toast.makeText(DoctorRegistry.this, "Please enter a valid name!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (surnameLength && !getSurname.isEmpty()) {
+            success = true;
+        } else {
+            Toast.makeText(DoctorRegistry.this, "Please enter a valid surname!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (checkEmailValidity) {
+            success = true;
+        } else {
+            Toast.makeText(DoctorRegistry.this, "Please enter a valid email", Toast.LENGTH_LONG).show();
+            success = false;
+            return;
+        }
+        if (checkEmail) {
+            success = true;
+        } else {
+            Toast.makeText(DoctorRegistry.this, "Email Address already in use", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (success) {
+            Intent intent = new Intent(DoctorRegistry.this, LogIn.class);
+
+            database.addDoctor(doctorModel);
+            Toast.makeText(DoctorRegistry.this, "Successfully registered", Toast.LENGTH_LONG).show();
+
+            startActivity(intent);
+        }
+    }
+
 
     //implementing runnable
     @Override
