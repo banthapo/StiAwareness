@@ -156,7 +156,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
 
     //setting up the the adapter for recyclerview
     private void recyclerview() {
-        adapter = new RecyclerViewAdapter(names, email, pNum, this::onDoctorClick);
+        adapter = new RecyclerViewAdapter(names, email, pNum, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(AvailableDoctors.this));
 

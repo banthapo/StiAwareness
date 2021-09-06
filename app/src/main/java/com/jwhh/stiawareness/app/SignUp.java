@@ -107,15 +107,16 @@ public class SignUp extends AppCompatActivity implements Runnable {
 
         boolean checkSpaceName = database.checkSpaceName(getSpaceName);
 
-        if (checkSpaceName) {
-            success = true;
-        } else {
-            Toast.makeText(SignUp.this, "Spacename already exists", Toast.LENGTH_LONG).show();
-            return;
-        }
+
 
         if (spaceNameLength && sNameLength) {
             success = true;
+            if (checkSpaceName) {
+                success = true;
+            } else {
+                Toast.makeText(SignUp.this, "Spacename already exists", Toast.LENGTH_LONG).show();
+                return;
+            }
         } else {
             Toast.makeText(SignUp.this, "invalid spacename", Toast.LENGTH_LONG).show();
             return;
