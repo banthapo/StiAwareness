@@ -3,7 +3,7 @@ package com.jwhh.stiawareness.models;
 public class DoctorModel {
 
     //declaring field variables
-    private String title, firstName, surname, emailAddress,name;
+    private String title, firstName, surname, emailAddress, name;
     private int phoneNumber;
 
     public DoctorModel(String title, String firstName, String surname, int phoneNumber, String emailAddress, String name) {
@@ -64,8 +64,8 @@ public class DoctorModel {
         return phoneNumber;
     }
 
-    public String getName(){
-        return  name;
+    public String getName() {
+        return name;
     }
 
 }

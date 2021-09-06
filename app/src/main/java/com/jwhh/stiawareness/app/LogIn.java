@@ -81,10 +81,10 @@ public class LogIn extends AppCompatActivity implements Runnable {
                 i.putExtra("spaceName", getName);
                 startActivity(i);
                 Toast.makeText(LogIn.this, "Log in successful", Toast.LENGTH_LONG).show();
-            }else {
+            } else {
                 Toast.makeText(LogIn.this, "Log in failed", Toast.LENGTH_LONG).show();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(LogIn.this, "failed", Toast.LENGTH_LONG).show();
 
         }

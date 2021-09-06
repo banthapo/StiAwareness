@@ -54,7 +54,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
     }
 
     //creating a popup view for available doctor onClick listener
-    public void showPopup(int position){
+    public void showPopup(int position) {
 
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
 
@@ -64,6 +64,8 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.clicked_doctor, null);
         docName = (TextView) layout.findViewById(R.id.clicked_dr_view);
+        message = (Button) layout.findViewById(R.id.message_doctor);
+        call = (Button) layout.findViewById(R.id.call_doctor);
 
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(layout);
@@ -77,12 +79,21 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
         String name = names.get(position);
         docName.setText(name);
 
-        Toast.makeText(AvailableDoctors.this, "Deleted:  " +  name, Toast.LENGTH_SHORT).show();
+        message.setOnClickListener(v -> {
+            Toast.makeText(AvailableDoctors.this, "Button not available! ", Toast.LENGTH_SHORT).show();
+            popupWindow.dismiss();
+        });
+
+        call.setOnClickListener(v -> {
+            Toast.makeText(AvailableDoctors.this, "Button not available! ", Toast.LENGTH_SHORT).show();
+            popupWindow.dismiss();
+        });
+
     }
 
     //setting the Recyclerview onClick listener action
     @Override
-    public void onDoctorClick(int position){
+    public void onDoctorClick(int position) {
         showPopup(position);
     }
 
@@ -90,7 +101,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
     private void deleteDoctor(int position) {
 
         String name = names.get(position);
-        int phoneNumber = pNum.get(position) ;
+        int phoneNumber = pNum.get(position);
 
         databaseManager.deleteDoctor(phoneNumber);
         names.remove(position);
@@ -98,7 +109,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
         email.remove(position);
         adapter.notifyItemRemoved(position);
 
-        Toast.makeText(AvailableDoctors.this, "Deleted:  " + name , Toast.LENGTH_SHORT).show();
+        Toast.makeText(AvailableDoctors.this, "Deleted:  " + name, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -112,7 +123,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.isEmpty()){
+                if (newText.isEmpty()) {
                     loadDoctors();
 
                 } else {
@@ -133,7 +144,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
     }
 
     //getting doctor list values from database and loading into array lists and into recyclerview
-    public void loadDoctors(){
+    public void loadDoctors() {
         databaseManager = new DatabaseManager(AvailableDoctors.this);
 
         names = databaseManager.getDoctorNames();
@@ -144,7 +155,7 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
     }
 
     //setting up the the adapter for recyclerview
-    private  void recyclerview(){
+    private void recyclerview() {
         adapter = new RecyclerViewAdapter(names, email, pNum, this::onDoctorClick);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(AvailableDoctors.this));
@@ -160,8 +171,8 @@ public class AvailableDoctors extends AppCompatActivity implements RecyclerViewA
         recyclerView = findViewById(R.id.doctor_recyclerview);
         doctorSearchView = findViewById(R.id.doctor_search_view);
 
-        message = findViewById(R.id.message);
-        call = findViewById(R.id.call);
+        message = findViewById(R.id.message_doctor);
+        call = findViewById(R.id.call_doctor);
 
         backButton = findViewById(R.id.from_available_doctors);
         backButton.setOnClickListener(v -> {

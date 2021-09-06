@@ -13,14 +13,14 @@ import com.jwhh.stiawareness.R;
 import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivityAwarenessBinding;
 
-public class Awareness extends AppCompatActivity implements Runnable{
+public class Awareness extends AppCompatActivity implements Runnable {
     private ActivityAwarenessBinding binding;
 
     //declaring field variables
     private ImageView backButton;
     private Button counsellingButton;
     private TextView deleteAccount;
-    private Intent intent ;
+    private Intent intent;
     private DatabaseManager databaseManager = new DatabaseManager(Awareness.this);
 
 
@@ -69,13 +69,13 @@ public class Awareness extends AppCompatActivity implements Runnable{
     //removing account from database using phone number and spacename and intent extra
     private void deleteMemberAccount() {
         deleteAccount.setOnClickListener(v -> {
-            intent= getIntent();
+            intent = getIntent();
             String spaceName = intent.getStringExtra("spaceName");
             intent = new Intent(Awareness.this, LogIn.class);
 
             int phoneNumber = databaseManager.getPhoneNumber(spaceName);
             databaseManager.deleteMember(phoneNumber);
-            Toast.makeText(Awareness.this, "successfully unregistered " + spaceName , Toast.LENGTH_LONG).show();
+            Toast.makeText(Awareness.this, "successfully unregistered " + spaceName, Toast.LENGTH_LONG).show();
             startActivity(intent);
         });
     }

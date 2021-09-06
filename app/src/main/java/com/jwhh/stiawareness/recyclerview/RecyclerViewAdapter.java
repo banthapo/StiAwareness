@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jwhh.stiawareness.app.AvailableDoctors;
@@ -16,7 +17,7 @@ import com.jwhh.stiawareness.R;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements View.OnClickListener , Filterable {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements View.OnClickListener, Filterable {
 
     //declaring field variables
     private ArrayList<String> names;
@@ -54,14 +55,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<String> filteredDoctors = new ArrayList<>();
 
-            if (constraint.toString().isEmpty()){
-               doctors.loadDoctors();
+            if (constraint.toString().isEmpty()) {
+                doctors.loadDoctors();
 
             } else {
                 for (int i = 0, allDoctorsSize = allDoctors.size(); i < allDoctorsSize; i++) {
                     String doctor = allDoctors.get(i);
 
-                    if(doctor.toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if (doctor.toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredDoctors.add(doctor);
                     }
 
@@ -78,9 +79,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             names.clear();
-            if (constraint.toString().isEmpty()){
-                return;
-            }else {
+            if (constraint.toString().isEmpty()) {
+                AvailableDoctors availableDoctors = new AvailableDoctors();
+                availableDoctors.loadDoctors();
+            } else {
                 names.addAll((Collection<? extends String>) results.values);
                 notifyDataSetChanged();
             }
@@ -93,6 +95,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     }
 
     //inflating layout on creating viewHolder
+    @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -107,9 +110,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     @Override
     public void onBindViewHolder(RecyclerViewHolder doctorHolder, int position) {
 
-            doctorHolder.name.setText(names.get(position));
-            doctorHolder.email.setText(email.get(position));
-            doctorHolder.pNumber.setText(pNum.get(position).toString());
+        doctorHolder.name.setText(names.get(position));
+        doctorHolder.email.setText(email.get(position));
+        doctorHolder.pNumber.setText(pNum.get(position).toString());
 
     }
 

@@ -14,7 +14,7 @@ import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivityDoctorRegistryBinding;
 import com.jwhh.stiawareness.models.DoctorModel;
 
-public class DoctorRegistry extends AppCompatActivity implements Runnable{
+public class DoctorRegistry extends AppCompatActivity implements Runnable {
     private ActivityDoctorRegistryBinding binding;
 
     //declaring field variables
@@ -58,16 +58,16 @@ public class DoctorRegistry extends AppCompatActivity implements Runnable{
     //registering doctor using doctor model
     private boolean registerDoctor(Button register) {
         register.setOnClickListener(v -> {
-            name = title.getText().toString()+ " " +fName.getText().toString()+ " " +sName.getText().toString();
+            name = title.getText().toString() + " " + fName.getText().toString() + " " + sName.getText().toString();
             tNumber = SignUp.getPhoneNumber();
 
             try {
                 doctorModel = new DoctorModel(title.getText().toString(), fName.getText().toString(), sName.getText().toString()
-                        , tNumber , emailAddress.getText().toString(), name);
+                        , tNumber, emailAddress.getText().toString(), name);
 
                 successCases(doctorDatabase, doctorModel);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(DoctorRegistry.this, "Fill all fields please ", Toast.LENGTH_LONG).show();
                 doctorModel = new DoctorModel(null, null, null, 0, null, null);
             }

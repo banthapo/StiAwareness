@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jwhh.stiawareness.R;
 
-class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     //declaring field variables
     public TextView name, email, pNumber;
     public RelativeLayout doctorLayout;

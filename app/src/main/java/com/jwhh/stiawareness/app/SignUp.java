@@ -14,7 +14,7 @@ import com.jwhh.stiawareness.database.DatabaseManager;
 import com.jwhh.stiawareness.databinding.ActivitySignUpBinding;
 import com.jwhh.stiawareness.models.MemberModel;
 
-public class SignUp extends AppCompatActivity implements Runnable{
+public class SignUp extends AppCompatActivity implements Runnable {
     private ActivitySignUpBinding binding;
 
     //declaring field variables
@@ -55,10 +55,10 @@ public class SignUp extends AppCompatActivity implements Runnable{
         memberSignUp.setOnClickListener(v -> {
             Intent memberIntent = new Intent(SignUp.this, LogIn.class);
 
-            if( memberSignIn()) {
+            if (memberSignIn()) {
                 startActivity(memberIntent);
             } else {
-                return ;
+                return;
             }
         });
     }
@@ -66,7 +66,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
     //setting up onClick action for doctor signup button
     private void doctorSignUp() {
         doctorSignUp.setOnClickListener(v -> {
-            if (memberSignIn()){
+            if (memberSignIn()) {
 
                 Intent doctorIntent = new Intent(SignUp.this, DoctorRegistry.class);
                 startActivity(doctorIntent);
@@ -81,9 +81,9 @@ public class SignUp extends AppCompatActivity implements Runnable{
             memberModel = new MemberModel(spaceName.getText().toString(), Integer.parseInt(phoneNumber.getText().toString())
                     , password.getText().toString());
 
-            successCases (memberDatabase, memberModel);
-            return  success;
-        }catch (Exception e){
+            successCases(memberDatabase, memberModel);
+            return success;
+        } catch (Exception e) {
             Toast.makeText(SignUp.this, "please fill all fields ", Toast.LENGTH_LONG).show();
             memberModel = new MemberModel(null, 0, null);
             return success;
@@ -101,13 +101,13 @@ public class SignUp extends AppCompatActivity implements Runnable{
 
         boolean spaceNameLength = spaceName.length() < 10;
         boolean sNameLength = spaceName.length() > 0;
-        boolean phoneNumberLength = phoneNumber.length()  < 3;
-        boolean passwordLength = password.length() < 3 ;
+        boolean phoneNumberLength = phoneNumber.length() < 3;
+        boolean passwordLength = password.length() < 3;
         boolean checkPassword = getPassword.equals(getPasswordConfirm);
 
         boolean checkSpaceName = database.checkSpaceName(getSpaceName);
 
-        if (checkSpaceName){
+        if (checkSpaceName) {
             success = true;
         } else {
             Toast.makeText(SignUp.this, "Spacename already exists", Toast.LENGTH_LONG).show();
@@ -123,7 +123,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
 
         if (!phoneNumberLength) {
             success = true;
-        } else{
+        } else {
             Toast.makeText(SignUp.this, "Phone number too short", Toast.LENGTH_LONG).show();
             return;
         }
@@ -134,7 +134,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
             Toast.makeText(SignUp.this, "Short password", Toast.LENGTH_LONG).show();
             return;
         }
-        if (checkPassword){
+        if (checkPassword) {
             success = true;
         } else {
             Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_LONG).show();
@@ -142,7 +142,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
             return;
         }
 
-        if (success){
+        if (success) {
             pNumber = Integer.parseInt(phoneNumber.getText().toString());
             database.addMember(memberModel);
             Toast.makeText(SignUp.this, "successfully signed in", Toast.LENGTH_LONG).show();
@@ -172,7 +172,7 @@ public class SignUp extends AppCompatActivity implements Runnable{
     }
 
     //getting phone number from a sign up form
-    public static int getPhoneNumber(){
+    public static int getPhoneNumber() {
         return pNumber;
     }
 }
