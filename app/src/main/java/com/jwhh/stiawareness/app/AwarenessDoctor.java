@@ -47,7 +47,7 @@ public class AwarenessDoctor extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
-        unregister = findViewById(R.id.unregister);
+        unregister = findViewById(R.id.unregister_doctor);
         update = findViewById(R.id.update_doctor);
 
         intent = getIntent();

@@ -14,13 +14,13 @@
         android:layout_marginBottom="4dp"
         android:text="update"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/unregister"
+        app:layout_constraintEnd_toEndOf="@+id/unregister_doctor"
         app:layout_constraintStart_toStartOf="@+id/unregister_doctor"
-        app:layout_constraintTop_toBottomOf="@+id/unregister"
+        app:layout_constraintTop_toBottomOf="@+id/unregister_doctor"
         app:layout_constraintVertical_bias="0.259" />
 
     <Button
-        android:id="@+id/unregister"
+        android:id="@+id/unregister_doctor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="unregister"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/unregister"
+        app:layout_constraintBottom_toTopOf="@+id/unregister_doctor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
